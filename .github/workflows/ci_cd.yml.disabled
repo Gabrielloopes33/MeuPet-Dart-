@@ -7,15 +7,6 @@ on:
   pull_request:
     branches: [ main, develop ]
   workflow_dispatch:
-    inputs:
-      deploy_environment:
-        description: 'Deployment environment'
-        required: true
-        default: 'staging'
-        type: choice
-        options:
-        - staging
-        - production
 
 env:
   FLUTTER_VERSION: '3.35.6'
@@ -25,15 +16,64 @@ jobs:
   # Stage 1: Code Quality & Security
   quality-gate:
     name: 🔍 Quality Gate
-    uses: ./.github/workflows/code_quality.yml
-    secrets: inherit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: 📚 Checkout code
+        uses: actions/checkout@v4
+
+      - name: ☕ Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.6'
+          channel: 'stable'
+          cache: true
+
+      - name: 📦 Get dependencies
+        run: flutter pub get
+
+      - name: 🧹 Check code formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: 🔎 Run static analysis
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
 
   # Stage 2: Testing
   test-suite:
     name: 🧪 Test Suite
-    uses: ./.github/workflows/tests.yml
+    runs-on: ubuntu-latest
     needs: quality-gate
-    secrets: inherit
+    timeout-minutes: 20
+
+    steps:
+      - name: 📚 Checkout code
+        uses: actions/checkout@v4
+
+      - name: ☕ Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.6'
+          channel: 'stable'
+          cache: true
+
+      - name: 📦 Get dependencies
+        run: flutter pub get
+
+      - name: 🧪 Run tests
+        run: flutter test
 
   # Stage 3: Build Android
   build-android:
