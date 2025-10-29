@@ -58,7 +58,7 @@ dependencies:
   # Location & Maps
   geolocator: ^12.0.0  # Para obter localização GPS
   google_maps_flutter: ^2.9.0  # Para exibir mapas
-  permission_handler: ^11.3.1  # Para gerenciar permissões
+  permission_handler: ^12.0.1  # Para gerenciar permissões
   url_launcher: ^6.3.0  # Para abrir URLs externas
 
 dev_dependencies:
