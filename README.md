@@ -1,5 +1,17 @@
 # MeuPet - Pet Care Management App
 
+[![CI/CD Pipeline](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/ci_cd.yml/badge.svg)](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/ci_cd.yml)
+[![Code Quality](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/code_quality.yml/badge.svg)](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/code_quality.yml)
+[![Tests](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/tests.yml/badge.svg)](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/tests.yml)
+[![Android Build](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/android.yml/badge.svg)](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/android.yml)
+[![iOS Build](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/ios.yml/badge.svg)](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/ios.yml)
+[![Web Build](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/web.yml/badge.svg)](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/web.yml)
+
+[![Flutter](https://img.shields.io/badge/Flutter-3.24.3-blue.svg?logo=flutter)](https://flutter.dev/)
+[![Dart](https://img.shields.io/badge/Dart-3.9.2-blue.svg?logo=dart)](https://dart.dev/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Codecov](https://codecov.io/gh/Gabrielloopes33/MeuPet-Dart-/branch/main/graph/badge.svg)](https://codecov.io/gh/Gabrielloopes33/MeuPet-Dart-)
+
 Um aplicativo Flutter completo para gerenciamento e cuidados de pets, com funcionalidades de localização de serviços, agendamento de consultas e acompanhamento da saúde dos animais.
 
 ## Visão Geral
@@ -175,7 +187,7 @@ O aplicativo implementa uma solução própria de mapas que **não requer APIs e
 
 - **Projeção Web Mercator**: Padrão internacional para conversão de coordenadas
 - **Renderização com Canvas**: Desenho de ruas, quarteirões e pontos de interesse
-- **Cálculos GPS precisos**: Posicionamento baseado em latitude/longitude reais
+- **Cálculos GPS precwebisos**: Posicionamento baseado em latitude/longitude reais
 - **Visual estilo OpenStreetMap**: Interface familiar e intuitiva
 
 **Vantagens:**
@@ -250,31 +262,135 @@ class Pet {
 - [ ] **Rede Social Pet**: Comunidade de tutores
 - [ ] **Tracking de Saúde**: Gráficos e análises veterinárias
 
-## Contribuição
+## 🚀 CI/CD Pipeline
+
+Este projeto utiliza uma esteira completa de CI/CD com GitHub Actions, incluindo:
+
+### 📊 Estágios do Pipeline
+
+1. **🔍 Quality Gate** - Análise estática, linting e verificação de segurança
+2. **🧪 Test Suite** - Testes unitários, de widget e cobertura de código
+3. **🏗️ Build Matrix** - Builds paralelos para Android, iOS e Web
+4. **🚀 Deploy** - Deploy automático baseado em branches/tags
+
+### 🎯 Triggers de Deploy
+
+| Branch/Tag | Android | iOS | Web | Ambiente |
+|------------|---------|-----|-----|----------|
+| `main` | ✅ Internal Testing | ❌ | ✅ GitHub Pages | Staging |
+| `v*` tags | ✅ Play Store Internal | ✅ TestFlight | ✅ Firebase Hosting | Production |
+| PRs | ✅ Debug Build | ❌ | ✅ Preview | Testing |
+
+### 📦 Artifacts Gerados
+
+- **Android**: APK (debug/release), AAB (release)
+- **iOS**: IPA, Archive (.xcarchive)
+- **Web**: Build otimizado para hosting
+- **Coverage**: Relatórios HTML e LCOV
+
+### 🔐 Secrets Necessários
+
+Para configurar o deploy automático, adicione os seguintes secrets no GitHub:
+
+#### Android (Google Play)
+```bash
+KEYSTORE_FILE=<base64_encoded_keystore>
+KEYSTORE_PASSWORD=<keystore_password>
+KEY_ALIAS=<key_alias>
+KEY_PASSWORD=<key_password>
+GOOGLE_PLAY_SERVICE_ACCOUNT=<service_account_json>
+```
+
+#### iOS (App Store)
+```bash
+IOS_CERTIFICATE=<base64_encoded_p12>
+IOS_CERTIFICATE_PASSWORD=<certificate_password>
+IOS_PROVISIONING_PROFILE=<base64_encoded_profile>
+IOS_TEAM_ID=<apple_team_id>
+IOS_APP_ID=<app_store_app_id>
+IOS_API_KEY=<app_store_api_key>
+IOS_API_ISSUER=<app_store_api_issuer>
+```
+
+#### Web (Firebase)
+```bash
+FIREBASE_SERVICE_ACCOUNT=<firebase_service_account>
+FIREBASE_PROJECT_ID=<firebase_project_id>
+```
+
+#### Notificações
+```bash
+SLACK_WEBHOOK=<slack_webhook_url>
+EMAIL_USERNAME=<smtp_username>
+EMAIL_PASSWORD=<smtp_password>
+NOTIFICATION_EMAIL=<notification_recipient>
+```
+
+### 🛠️ Comandos Locais
+
+```bash
+# Executar análise de qualidade
+flutter analyze
+dart format --output=none --set-exit-if-changed .
+
+# Executar testes com cobertura
+flutter test --coverage
+
+# Build para produção
+flutter build apk --release
+flutter build ios --release  # macOS only
+flutter build web --release
+```
+
+## 🤝 Contribuição
 
 ### Como Contribuir
 
 1. **Fork** do repositório
 2. **Create branch** para sua feature (`git checkout -b feature/nova-funcionalidade`)
-3. **Commit** suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
+3. **Commit** suas mudanças (`git commit -m 'feat: adiciona nova funcionalidade'`)
 4. **Push** para a branch (`git push origin feature/nova-funcionalidade`)
-5. **Pull Request** detalhado
+5. **Pull Request** usando o template
 
-### Padrões de Código
+### 📋 Padrões de Código
 
 - Siga as convenções do **Flutter Style Guide**
-- Use **linting** com flutter_lints
-- **Documente** funções públicas
-- **Teste** funcionalidades críticas
+- Use **Conventional Commits** para mensagens de commit
+- **Linting** obrigatório com flutter_lints
+- **Documente** funções públicas com dartdoc
+- **Teste** funcionalidades críticas (cobertura > 80%)
 - Mantenha **responsividade** em diferentes telas
 
-### Issues e Bugs
+### 🐛 Reportar Bugs
 
-Para reportar problemas:
-1. Verifique se já não existe issue similar
-2. Use template de bug report
-3. Inclua screenshots e logs quando necessário
-4. Especifique versão do Flutter e sistema operacional
+Use nossos [templates de issue](.github/ISSUE_TEMPLATE/) para reportar:
+- 🐛 **Bug Report** - Para problemas no app
+- ✨ **Feature Request** - Para novas funcionalidades  
+- 📚 **Documentation** - Para melhorias na documentação
+
+### ✅ Checklist do PR
+
+Antes de abrir um PR, verifique:
+- [ ] ✅ `flutter analyze` passa sem erros
+- [ ] ✅ `flutter test` passa todos os testes
+- [ ] ✅ `dart format` foi executado
+- [ ] 📱 Testado em diferentes plataformas
+- [ ] 📝 Documentação atualizada
+- [ ] 🧪 Testes adicionados para novas funcionalidades
+
+### 🏷️ Semantic Versioning
+
+Usamos [Semantic Versioning](https://semver.org/):
+- `MAJOR.MINOR.PATCH` (ex: 1.2.3)
+- **MAJOR**: Breaking changes
+- **MINOR**: Novas funcionalidades (backward compatible)  
+- **PATCH**: Bug fixes
+
+### 📊 Dependências
+
+- **Dependabot** atualiza dependências automaticamente
+- PRs de atualização são criados semanalmente
+- Revisar e testar antes de fazer merge
 
 ## Licença
 

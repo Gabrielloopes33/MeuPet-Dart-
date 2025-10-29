@@ -83,7 +83,7 @@ class _CustomMapWidgetState extends State<CustomMapWidget> {
       onTap: () {
         widget.onMapTap?.call();
       },
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         height: double.infinity,
         child: LayoutBuilder(
@@ -166,7 +166,7 @@ class _CustomMapWidgetState extends State<CustomMapWidget> {
   }
 
   Widget _buildMarker(MapMarker marker) {
-    return Container(
+    return SizedBox(
       width: 40,
       height: 40,
       child: Stack(

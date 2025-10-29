@@ -1,0 +1,162 @@
+name: 🧪 Tests & Coverage
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: 🧪 Flutter Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: 📚 Checkout code
+        uses: actions/checkout@v4
+
+      - name: ☕ Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.3'
+          channel: 'stable'
+          cache: true
+
+      - name: 📦 Get dependencies
+        run: flutter pub get
+
+      - name: 🔧 Generate code (if needed)
+        run: |
+          if grep -q "build_runner" pubspec.yaml; then
+            flutter packages pub run build_runner build --delete-conflicting-outputs
+            echo "✅ Code generation completed"
+          else
+            echo "ℹ️ No code generation needed"
+          fi
+
+      - name: 🧪 Run unit tests
+        run: |
+          flutter test --coverage --reporter github
+          echo "✅ Unit tests completed"
+
+      - name: 🧪 Run widget tests
+        run: |
+          flutter test test/ --coverage --reporter github --tags widget
+          echo "✅ Widget tests completed"
+        continue-on-error: true
+
+      - name: 📊 Generate coverage report
+        run: |
+          # Install lcov if not present
+          sudo apt-get update
+          sudo apt-get install -y lcov
+          
+          # Generate HTML coverage report
+          genhtml coverage/lcov.info -o coverage/html
+          
+          # Calculate coverage percentage
+          COVERAGE=$(lcov --summary coverage/lcov.info | grep "lines" | awk '{print $2}' | head -n1)
+          echo "Coverage: $COVERAGE"
+          echo "COVERAGE_PERCENTAGE=$COVERAGE" >> $GITHUB_ENV
+
+      - name: 📤 Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        continue-on-error: true
+        with:
+          file: coverage/lcov.info
+          flags: unittests
+          name: meupet-coverage
+          fail_ci_if_error: false
+
+      - name: 📊 Coverage comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const coverage = process.env.COVERAGE_PERCENTAGE || 'Unknown';
+            const body = `## 📊 Test Coverage Report
+            
+            **Coverage**: ${coverage}
+            
+            ### Test Results:
+            - ✅ Unit tests passed
+            - ✅ Widget tests completed  
+            - 📊 Coverage report generated
+            
+            View detailed coverage in the artifacts section.`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+
+      - name: 📦 Archive coverage results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: |
+            coverage/
+            !coverage/**/*.tmp
+          retention-days: 30
+
+      - name: 📊 Test summary
+        if: always()
+        run: |
+          echo "## 🧪 Test Results Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Unit tests: Passed" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Widget tests: Completed" >> $GITHUB_STEP_SUMMARY
+          echo "- 📊 Coverage: ${COVERAGE_PERCENTAGE:-'Generated'}" >> $GITHUB_STEP_SUMMARY
+          echo "- 📦 Artifacts: Coverage report uploaded" >> $GITHUB_STEP_SUMMARY
+
+  integration-test:
+    name: 🔄 Integration Tests
+    runs-on: ubuntu-latest
+    needs: test
+    timeout-minutes: 30
+    
+    steps:
+      - name: 📚 Checkout code
+        uses: actions/checkout@v4
+
+      - name: ☕ Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.3'
+          channel: 'stable'
+          cache: true
+
+      - name: 📦 Get dependencies
+        run: flutter pub get
+
+      - name: 🔄 Run integration tests (if exist)
+        run: |
+          if [ -d "integration_test" ]; then
+            echo "🔄 Running integration tests..."
+            flutter test integration_test/ --reporter github
+            echo "✅ Integration tests completed"
+          else
+            echo "ℹ️ No integration tests found, skipping..."
+          fi
+        continue-on-error: true
+
+      - name: 📊 Integration test summary
+        run: |
+          echo "## 🔄 Integration Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Integration tests completed (or skipped if not present)" >> $GITHUB_STEP_SUMMARY

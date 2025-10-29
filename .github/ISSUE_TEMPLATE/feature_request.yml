@@ -1,0 +1,129 @@
+name: ✨ Feature Request
+description: Sugira uma nova funcionalidade para o MeuPet
+title: "[FEATURE] "
+labels: ["enhancement", "needs-discussion"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        💡 Tem uma ideia incrível para melhorar o MeuPet? Conte para nós!
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: 📝 Descrição da Funcionalidade
+      description: Descreva claramente a funcionalidade que você gostaria de ver
+      placeholder: Ex: Gostaria de poder agendar consultas diretamente pelo app
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem-solution
+    attributes:
+      label: 🎯 Problema que Resolve
+      description: Que problema esta funcionalidade resolveria?
+      placeholder: Ex: Atualmente preciso ligar para cada veterinário para agendar, o que é inconveniente
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: 💡 Solução Proposta
+      description: Como você imagina que esta funcionalidade funcionaria?
+      placeholder: |
+        Ex: 
+        - Botão "Agendar" em cada veterinário
+        - Calendário com horários disponíveis
+        - Confirmação via notificação
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 📊 Prioridade
+      description: Quão importante é esta funcionalidade para você?
+      options:
+        - Baixa - seria legal ter
+        - Média - melhoraria minha experiência
+        - Alta - é essencial para usar o app
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 🏷️ Categoria
+      description: Em qual área do app esta funcionalidade se encaixa?
+      options:
+        - Autenticação & Onboarding
+        - Gerenciamento de Pets
+        - Localização de Serviços
+        - Agendamento & Agenda
+        - Perfil do Usuário
+        - Interface & UX
+        - Notificações
+        - Mapas & GPS
+        - Outra
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 🔄 Alternativas Consideradas
+      description: Você pensou em outras formas de resolver este problema?
+      placeholder: Ex: Considerei usar WhatsApp, mas seria mais prático no próprio app
+
+  - type: textarea
+    id: user-story
+    attributes:
+      label: 👤 História do Usuário
+      description: Escreva uma história do usuário para esta funcionalidade
+      placeholder: |
+        Como [tipo de usuário]
+        Eu quero [funcionalidade]
+        Para que [benefício]
+        
+        Ex: Como tutor de pet, eu quero agendar consultas pelo app para que eu não precise ligar para cada veterinário
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: ✅ Critérios de Aceitação
+      description: O que precisa funcionar para considerar esta funcionalidade pronta?
+      placeholder: |
+        - [ ] Usuário pode ver horários disponíveis
+        - [ ] Usuário pode selecionar data/hora
+        - [ ] Confirmação é enviada por notificação
+        - [ ] Agendamento aparece na agenda do usuário
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: 🎨 Mockups/Designs
+      description: Você tem alguma ideia visual de como deveria ser?
+      placeholder: Cole links para imagens, wireframes ou descreva a interface
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 📌 Contexto Adicional
+      description: Qualquer outra informação que possa ser útil
+      placeholder: Ex: Vi esta funcionalidade em outros apps como X e Y
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: ✅ Checklist
+      description: Confirme que você verificou estes itens
+      options:
+        - label: Verifiquei se já existe uma feature request similar
+          required: true
+        - label: Esta funcionalidade faz sentido no contexto do MeuPet
+          required: true
+        - label: Incluí informações suficientes para implementação
+          required: true

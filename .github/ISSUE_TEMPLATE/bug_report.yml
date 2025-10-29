@@ -1,0 +1,113 @@
+name: 🐛 Bug Report
+description: Reporte um bug no aplicativo MeuPet
+title: "[BUG] "
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por reportar este bug! Por favor, preencha as informações abaixo para nos ajudar a resolver o problema rapidamente.
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: 📝 Descrição do Bug
+      description: Descreva claramente o que está acontecendo
+      placeholder: Ex: O app trava ao tentar localizar veterinários próximos
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: 🔄 Passos para Reproduzir
+      description: Como podemos reproduzir este bug?
+      placeholder: |
+        1. Abra o app
+        2. Vá para 'Serviços'
+        3. Toque em 'Veterinários'
+        4. Veja o erro aparecer
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: ✅ Comportamento Esperado
+      description: O que deveria acontecer?
+      placeholder: Ex: Deveria mostrar uma lista de veterinários próximos
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: ❌ Comportamento Atual
+      description: O que está acontecendo na verdade?
+      placeholder: Ex: O app trava e fecha automaticamente
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: 📱 Plataforma
+      description: Em qual plataforma você está enfrentando este problema?
+      options:
+        - Android
+        - iOS
+        - Web
+        - Todas as plataformas
+    validations:
+      required: true
+
+  - type: input
+    id: device
+    attributes:
+      label: 📟 Dispositivo/Navegador
+      description: Modelo do dispositivo ou navegador
+      placeholder: Ex: Samsung Galaxy S21, iPhone 13, Chrome 120
+
+  - type: input
+    id: app-version
+    attributes:
+      label: 📦 Versão do App
+      description: Qual versão do MeuPet você está usando?
+      placeholder: Ex: 1.0.0
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 📋 Logs/Stack Trace
+      description: Cole aqui qualquer log ou erro que apareça
+      placeholder: |
+        Flutter logs ou mensagens de erro...
+      render: shell
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 📸 Screenshots/Vídeos
+      description: Se possível, anexe screenshots ou vídeos do problema
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 📌 Informações Adicionais
+      description: Qualquer outra informação que possa ser útil
+      placeholder: Ex: Isso só acontece quando estou sem internet
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: ✅ Checklist
+      description: Confirme que você verificou estes itens
+      options:
+        - label: Verifiquei se já existe uma issue similar
+          required: true
+        - label: Testei na versão mais recente do app
+          required: true
+        - label: Incluí todas as informações necessárias
+          required: true

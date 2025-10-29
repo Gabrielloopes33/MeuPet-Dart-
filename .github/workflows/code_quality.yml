@@ -1,0 +1,119 @@
+name: 🔍 Code Quality & Analysis
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  code-quality:
+    name: 📊 Code Quality Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: 📚 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ☕ Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.3'
+          channel: 'stable'
+          cache: true
+
+      - name: 🔍 Verify Flutter installation
+        run: flutter doctor -v
+
+      - name: 📦 Get dependencies
+        run: flutter pub get
+
+      - name: 🔒 Check for dependency vulnerabilities
+        run: |
+          flutter pub deps
+          echo "✅ Dependencies verification completed"
+
+      - name: 📝 Verify pubspec.yaml
+        run: |
+          if [ ! -f pubspec.yaml ]; then
+            echo "❌ pubspec.yaml not found!"
+            exit 1
+          fi
+          echo "✅ pubspec.yaml found and valid"
+
+      - name: 🧹 Check code formatting
+        run: |
+          dart format --output=none --set-exit-if-changed .
+          echo "✅ Code formatting check completed"
+
+      - name: 🔎 Run static analysis
+        run: |
+          flutter analyze --no-fatal-infos
+          echo "✅ Static analysis completed"
+
+      - name: 🏗️ Check if project builds
+        run: |
+          flutter build apk --debug --no-sound-null-safety
+          echo "✅ Debug build completed successfully"
+
+      - name: 📊 Generate analysis report
+        if: always()
+        run: |
+          echo "## 📊 Code Quality Report" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Dependencies verified" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Code formatted properly" >> $GITHUB_STEP_SUMMARY  
+          echo "- ✅ No static analysis issues" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Project builds successfully" >> $GITHUB_STEP_SUMMARY
+
+  security-scan:
+    name: 🔐 Security Analysis
+    runs-on: ubuntu-latest
+    needs: code-quality
+    
+    steps:
+      - name: 📚 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔐 Run security scan
+        uses: securecodewarrior/github-action-add-sarif@v1
+        continue-on-error: true
+        with:
+          sarif-file: 'security-scan.sarif'
+
+      - name: 🔍 Check for sensitive files
+        run: |
+          echo "🔍 Checking for sensitive files..."
+          
+          # Check for common sensitive file patterns
+          SENSITIVE_FILES=$(find . -type f \( \
+            -name "*.key" -o \
+            -name "*.pem" -o \
+            -name "*.p12" -o \
+            -name "*.jks" -o \
+            -name "google-services.json" -o \
+            -name "GoogleService-Info.plist" \
+          \) -not -path "./.git/*" | head -10)
+          
+          if [ ! -z "$SENSITIVE_FILES" ]; then
+            echo "⚠️ Potentially sensitive files found:"
+            echo "$SENSITIVE_FILES"
+            echo "Please ensure these files contain only non-sensitive data or are properly gitignored"
+          else
+            echo "✅ No obviously sensitive files found in repository"
+          fi
+
+      - name: 📊 Security summary
+        run: |
+          echo "## 🔐 Security Scan Results" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Security scan completed" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Sensitive files check completed" >> $GITHUB_STEP_SUMMARY

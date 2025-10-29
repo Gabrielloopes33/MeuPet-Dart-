@@ -1,0 +1,85 @@
+# Dependabot configuration for MeuPet
+# This will automatically create PRs to update dependencies
+
+version: 2
+updates:
+  # Flutter/Dart dependencies
+  - package-ecosystem: "pub"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "Gabrielloopes33"  # Ajuste para seu username
+    assignees:
+      - "Gabrielloopes33"  # Ajuste para seu username
+    commit-message:
+      prefix: "⬆️"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "dart"
+    ignore:
+      # Ignore major version updates for critical packages
+      - dependency-name: "flutter"
+        update-types: ["version-update:semver-major"]
+    groups:
+      flutter-core:
+        patterns:
+          - "flutter*"
+        update-types:
+          - "minor"
+          - "patch"
+      ui-packages:
+        patterns:
+          - "google_fonts"
+          - "cupertino_icons"
+        update-types:
+          - "minor"
+          - "patch"
+      dev-dependencies:
+        patterns:
+          - "*_test"
+          - "build_runner"
+          - "json_serializable"
+          - "flutter_lints"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "10:00"
+    open-pull-requests-limit: 3
+    reviewers:
+      - "Gabrielloopes33"
+    assignees:
+      - "Gabrielloopes33"
+    commit-message:
+      prefix: "🔧"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+  # Docker (if you add Docker later)
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"  
+      time: "11:00"
+    open-pull-requests-limit: 2
+    reviewers:
+      - "Gabrielloopes33"
+    commit-message:
+      prefix: "🐋"
+    labels:
+      - "dependencies"
+      - "docker"

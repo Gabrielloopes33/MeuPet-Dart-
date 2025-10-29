@@ -1,0 +1,66 @@
+name: 📚 Documentation Issue
+description: Reporte problemas na documentação
+title: "[DOCS] "
+labels: ["documentation"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        📚 Encontrou algo confuso na documentação? Vamos melhorar juntos!
+
+  - type: dropdown
+    id: doc-type
+    attributes:
+      label: 📑 Tipo de Documentação
+      description: Qual tipo de documentação tem o problema?
+      options:
+        - README.md
+        - Comentários no código
+        - API Documentation
+        - Setup/Installation Guide
+        - Contributing Guidelines
+        - Workflow Documentation
+        - User Manual
+        - Developer Docs
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue-description
+    attributes:
+      label: 📝 Descrição do Problema
+      description: O que está confuso, incorreto ou em falta?
+      placeholder: Ex: As instruções de instalação não funcionam no Windows
+    validations:
+      required: true
+
+  - type: textarea
+    id: location
+    attributes:
+      label: 📍 Localização
+      description: Onde está o problema? (arquivo, seção, linha)
+      placeholder: Ex: README.md, seção "Instalação", linha 45
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-content
+    attributes:
+      label: 📄 Conteúdo Atual
+      description: Cole o texto atual que tem problema
+      placeholder: Cole aqui o texto problemático...
+
+  - type: textarea
+    id: suggested-improvement
+    attributes:
+      label: ✏️ Melhoria Sugerida
+      description: Como você sugere melhorar esta documentação?
+      placeholder: Sua sugestão de melhoria...
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 📌 Contexto Adicional
+      description: Qualquer informação adicional que possa ajudar
