@@ -19,7 +19,7 @@ on:
 
 env:
   JAVA_VERSION: '17'
-  FLUTTER_VERSION: '3.24.3'
+  FLUTTER_VERSION: '3.35.6'
 
 jobs:
   build-android:
@@ -57,20 +57,20 @@ jobs:
       - name: 🏗️ Build Debug APK
         if: ${{ github.event.inputs.build_type == 'debug' || github.event_name == 'pull_request' }}
         run: |
-          flutter build apk --debug --no-sound-null-safety
+          flutter build apk --debug
           echo "✅ Debug APK build completed"
 
       # Release Build (for tags and manual dispatch)
       - name: 🏗️ Build Release APK
         if: ${{ github.event.inputs.build_type == 'release' || startsWith(github.ref, 'refs/tags/v') }}
         run: |
-          flutter build apk --release --no-sound-null-safety
+          flutter build apk --release
           echo "✅ Release APK build completed"
 
       - name: 🏗️ Build Release AAB (for Play Store)
         if: ${{ github.event.inputs.build_type == 'release' || startsWith(github.ref, 'refs/tags/v') }}
         run: |
-          flutter build appbundle --release --no-sound-null-safety
+          flutter build appbundle --release
           echo "✅ Release AAB build completed"
 
       # Sign APK (for release builds)
