@@ -50,7 +50,7 @@ dependencies:
   google_fonts: ^6.1.0  # Para as fontes
   
   # Utilities
-  intl: ^0.19.0  # Para formatação de datas
+  intl: ^0.20.2  # Para formatação de datas
   json_annotation: ^4.8.1  # Para anotações do json_serializable
   table_calendar: ^3.1.2  # Para o calendário na agenda
   image_picker: ^1.1.2  # Para upload de imagens dos pets
