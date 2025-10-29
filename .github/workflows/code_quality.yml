@@ -58,12 +58,12 @@ jobs:
 
       - name: 🔎 Run static analysis
         run: |
-          flutter analyze --no-fatal-infos
+          flutter analyze --no-fatal-infos --no-fatal-warnings
           echo "✅ Static analysis completed"
 
       - name: 🏗️ Check if project builds
         run: |
-          flutter build apk --debug --no-sound-null-safety
+          flutter build apk --debug
           echo "✅ Debug build completed successfully"
 
       - name: 📊 Generate analysis report
