@@ -1,11 +1,6 @@
 # MeuPet - Pet Care Management App
 
-[![CI/CD Pipeline](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/ci_cd.yml/badge.svg)](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/ci_cd.yml)
-[![Code Quality](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/code_quality.yml/badge.svg)](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/code_quality.yml)
-[![Tests](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/tests.yml/badge.svg)](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/tests.yml)
-[![Android Build](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/android.yml/badge.svg)](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/android.yml)
-[![iOS Build](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/ios.yml/badge.svg)](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/ios.yml)
-[![Web Build](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/web.yml/badge.svg)](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/web.yml)
+[![CI/CD Pipeline](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/ci_cd_simple.yml/badge.svg)](https://github.com/Gabrielloopes33/MeuPet-Dart-/actions/workflows/ci_cd_simple.yml)
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.24.3-blue.svg?logo=flutter)](https://flutter.dev/)
 [![Dart](https://img.shields.io/badge/Dart-3.9.2-blue.svg?logo=dart)](https://dart.dev/)
