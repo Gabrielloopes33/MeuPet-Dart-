@@ -49,15 +49,17 @@ class _ServicesMapScreenState extends ConsumerState<ServicesMapScreen> {
   Future<void> _loadServices() async {
     // Carregar localização primeiro
     await ref.read(locationNotifierProvider.notifier).getCurrentLocation();
-    
+
     final locationState = ref.read(locationNotifierProvider);
-    
+
     // Carregar serviços baseado na localização com raio maior
-    await ref.read(servicesNotifierProvider.notifier).searchServicesByType(
-      widget.serviceType,
-      userLocation: locationState.position,
-      radiusKm: 100.0, // Raio bem grande para garantir que encontre
-    );
+    await ref
+        .read(servicesNotifierProvider.notifier)
+        .searchServicesByType(
+          widget.serviceType,
+          userLocation: locationState.position,
+          radiusKm: 100.0, // Raio bem grande para garantir que encontre
+        );
 
     _updateMapMarkers();
   }
@@ -81,7 +83,7 @@ class _ServicesMapScreenState extends ConsumerState<ServicesMapScreen> {
         ),
       );
     }
-    
+
     // Para demo, sempre centralizar em São Paulo onde estão os serviços
     // (em produção você buscaria serviços próximos à localização real do usuário)
 
@@ -148,11 +150,11 @@ class _ServicesMapScreenState extends ConsumerState<ServicesMapScreen> {
   // Método temporariamente desabilitado até configurar Google Maps API
   // void _onMapCreated(GoogleMapController controller) {
   //   _mapController = controller;
-  //   
+  //
   //   // Posicionar câmera na localização do usuário ou padrão
   //   final locationState = ref.read(locationNotifierProvider);
   //   final position = locationState.position;
-  //   
+  //
   //   if (position != null) {
   //     controller.animateCamera(
   //       CameraUpdate.newLatLngZoom(
@@ -186,8 +188,6 @@ class _ServicesMapScreenState extends ConsumerState<ServicesMapScreen> {
     }
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     final servicesState = ref.watch(servicesNotifierProvider);
@@ -209,10 +209,7 @@ class _ServicesMapScreenState extends ConsumerState<ServicesMapScreen> {
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
-                        colors: [
-                          Colors.grey[200]!,
-                          Colors.grey[400]!,
-                        ],
+                        colors: [Colors.grey[200]!, Colors.grey[400]!],
                       ),
                     ),
                   ),
@@ -224,13 +221,13 @@ class _ServicesMapScreenState extends ConsumerState<ServicesMapScreen> {
                       zoom: _mapZoom,
                       markers: _mapMarkers,
                       onMarkerTap: (marker) {
-                        if (marker.data != null && marker.data is ServiceProvider) {
+                        if (marker.data != null &&
+                            marker.data is ServiceProvider) {
                           _selectService(marker.data as ServiceProvider);
                         }
                       },
                     ),
                   ),
-
                 ],
               ),
             ),
@@ -246,10 +243,7 @@ class _ServicesMapScreenState extends ConsumerState<ServicesMapScreen> {
                 ),
                 child: IconButton(
                   onPressed: () => context.go('/home'),
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  ),
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
                 ),
               ),
             ),
@@ -305,8 +299,10 @@ class _ServicesMapScreenState extends ConsumerState<ServicesMapScreen> {
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      height: hasSelectedService 
-          ? (_isBottomSheetExpanded ? MediaQuery.of(context).size.height * 0.6 : 200)
+      height: hasSelectedService
+          ? (_isBottomSheetExpanded
+                ? MediaQuery.of(context).size.height * 0.6
+                : 200)
           : 300,
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -346,7 +342,7 @@ class _ServicesMapScreenState extends ConsumerState<ServicesMapScreen> {
 
   Widget _buildSelectedServiceCard() {
     final service = _selectedService!;
-    
+
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -359,24 +355,25 @@ class _ServicesMapScreenState extends ConsumerState<ServicesMapScreen> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: service.photos.isNotEmpty
-                    ? Image.network(
-                        service.photos.first,
-                        width: 60,
-                        height: 60,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => Container(
+                      ? Image.network(
+                          service.photos.first,
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Container(
+                                width: 60,
+                                height: 60,
+                                color: Colors.grey[300],
+                                child: const Icon(Icons.business),
+                              ),
+                        )
+                      : Container(
                           width: 60,
                           height: 60,
                           color: Colors.grey[300],
                           child: const Icon(Icons.business),
                         ),
-                      )
-                    : Container(
-                        width: 60,
-                        height: 60,
-                        color: Colors.grey[300],
-                        child: const Icon(Icons.business),
-                      ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -395,16 +392,25 @@ class _ServicesMapScreenState extends ConsumerState<ServicesMapScreen> {
                         children: [
                           const Icon(Icons.star, color: Colors.amber, size: 16),
                           const SizedBox(width: 4),
-                          Text('${service.rating.toStringAsFixed(1)} (${service.reviewCount})'),
+                          Text(
+                            '${service.rating.toStringAsFixed(1)} (${service.reviewCount})',
+                          ),
                           const SizedBox(width: 12),
-                          const Icon(Icons.location_on, color: Colors.grey, size: 16),
+                          const Icon(
+                            Icons.location_on,
+                            color: Colors.grey,
+                            size: 16,
+                          ),
                           const SizedBox(width: 4),
                           Text('${service.distanceKm.toStringAsFixed(1)} km'),
                         ],
                       ),
                       const SizedBox(height: 4),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: service.isOpen ? Colors.green : Colors.red,
                           borderRadius: BorderRadius.circular(12),
@@ -428,7 +434,9 @@ class _ServicesMapScreenState extends ConsumerState<ServicesMapScreen> {
                     });
                   },
                   icon: Icon(
-                    _isBottomSheetExpanded ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
+                    _isBottomSheetExpanded
+                        ? Icons.keyboard_arrow_down
+                        : Icons.keyboard_arrow_up,
                   ),
                 ),
               ],
@@ -463,12 +471,13 @@ class _ServicesMapScreenState extends ConsumerState<ServicesMapScreen> {
                       label: const Text('Ligar'),
                     ),
                   ),
-                
+
                 if (service.phone != null) const SizedBox(width: 8),
-                
+
                 Expanded(
                   child: ElevatedButton.icon(
-                    onPressed: () => _openDirections(service.latitude, service.longitude),
+                    onPressed: () =>
+                        _openDirections(service.latitude, service.longitude),
                     icon: const Icon(Icons.directions),
                     label: const Text('Rotas'),
                   ),
@@ -510,10 +519,7 @@ class _ServicesMapScreenState extends ConsumerState<ServicesMapScreen> {
                 const Spacer(),
                 Text(
                   '${servicesState.services.length} encontrados',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
-                  ),
+                  style: const TextStyle(fontSize: 14, color: Colors.grey),
                 ),
               ],
             ),
@@ -534,24 +540,29 @@ class _ServicesMapScreenState extends ConsumerState<ServicesMapScreen> {
                           leading: ClipRRect(
                             borderRadius: BorderRadius.circular(6),
                             child: service.photos.isNotEmpty
-                              ? Image.network(
-                                  service.photos.first,
-                                  width: 50,
-                                  height: 50,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) => Container(
+                                ? Image.network(
+                                    service.photos.first,
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            Container(
+                                              width: 50,
+                                              height: 50,
+                                              color: Colors.grey[300],
+                                              child: const Icon(
+                                                Icons.business,
+                                                size: 20,
+                                              ),
+                                            ),
+                                  )
+                                : Container(
                                     width: 50,
                                     height: 50,
                                     color: Colors.grey[300],
                                     child: const Icon(Icons.business, size: 20),
                                   ),
-                                )
-                              : Container(
-                                  width: 50,
-                                  height: 50,
-                                  color: Colors.grey[300],
-                                  child: const Icon(Icons.business, size: 20),
-                                ),
                           ),
                           title: Text(
                             service.name,
@@ -564,18 +575,29 @@ class _ServicesMapScreenState extends ConsumerState<ServicesMapScreen> {
                             children: [
                               Row(
                                 children: [
-                                  const Icon(Icons.star, color: Colors.amber, size: 14),
+                                  const Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                    size: 14,
+                                  ),
                                   const SizedBox(width: 2),
                                   Text(service.rating.toStringAsFixed(1)),
                                   const SizedBox(width: 8),
-                                  Text('${service.distanceKm.toStringAsFixed(1)} km'),
+                                  Text(
+                                    '${service.distanceKm.toStringAsFixed(1)} km',
+                                  ),
                                 ],
                               ),
                               Container(
                                 margin: const EdgeInsets.only(top: 4),
-                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                  vertical: 2,
+                                ),
                                 decoration: BoxDecoration(
-                                  color: service.isOpen ? Colors.green : Colors.red,
+                                  color: service.isOpen
+                                      ? Colors.green
+                                      : Colors.red,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
@@ -612,24 +634,20 @@ class _ServicesMapScreenState extends ConsumerState<ServicesMapScreen> {
 
   void _makePhoneCall(String phone) {
     // TODO: Implementar ligação
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Ligando para $phone')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('Ligando para $phone')));
   }
 
   void _openDirections(double lat, double lng) {
     // TODO: Abrir app de mapas para direções
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Abrindo direções...')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Abrindo direções...')));
   }
 
   void _viewDetails(ServiceProvider service) {
-    Navigator.pushNamed(
-      context,
-      '/service-details',
-      arguments: service.id,
-    );
+    Navigator.pushNamed(context, '/service-details', arguments: service.id);
   }
 }
 
@@ -648,7 +666,7 @@ class LocationStatusWidget extends ConsumerWidget {
           label: Text('Localização inicial'),
           backgroundColor: Colors.grey,
         );
-        
+
       case LocationStatus.loading:
         return const Chip(
           avatar: SizedBox(
@@ -659,21 +677,21 @@ class LocationStatusWidget extends ConsumerWidget {
           label: Text('Buscando...'),
           backgroundColor: Colors.blue,
         );
-        
+
       case LocationStatus.success:
         return const Chip(
           avatar: Icon(Icons.location_on, size: 16, color: Colors.white),
           label: Text('GPS ativo'),
           backgroundColor: Colors.green,
         );
-        
+
       case LocationStatus.denied:
         return const Chip(
           avatar: Icon(Icons.location_off, size: 16, color: Colors.white),
           label: Text('GPS negado'),
           backgroundColor: Colors.red,
         );
-        
+
       case LocationStatus.error:
         return const Chip(
           avatar: Icon(Icons.error, size: 16, color: Colors.white),

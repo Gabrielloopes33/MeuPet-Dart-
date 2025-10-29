@@ -41,13 +41,13 @@ class ServiceFilters extends StatelessWidget {
         children: [
           Text(
             'Filtros',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Raio de busca
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,9 +65,9 @@ class ServiceFilters extends StatelessWidget {
               ),
             ],
           ),
-          
+
           const SizedBox(height: 8),
-          
+
           // Rating mínimo
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,9 +85,9 @@ class ServiceFilters extends StatelessWidget {
               ),
             ],
           ),
-          
+
           const SizedBox(height: 8),
-          
+
           // Apenas estabelecimentos abertos
           Row(
             children: [
@@ -98,18 +98,18 @@ class ServiceFilters extends StatelessWidget {
               const Text('Apenas estabelecimentos abertos'),
             ],
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Ordenação
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Ordenar por:',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Wrap(
@@ -123,9 +123,9 @@ class ServiceFilters extends StatelessWidget {
               ),
             ],
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Botão aplicar filtros
           SizedBox(
             width: double.infinity,

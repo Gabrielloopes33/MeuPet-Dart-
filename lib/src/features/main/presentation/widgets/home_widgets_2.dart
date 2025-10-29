@@ -13,10 +13,7 @@ class WeatherCard extends StatelessWidget {
         children: [
           const Text(
             'Clima para passeios',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),
           Card(
@@ -24,11 +21,7 @@ class WeatherCard extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
-                  const Icon(
-                    Icons.wb_sunny,
-                    size: 48,
-                    color: Colors.orange,
-                  ),
+                  const Icon(Icons.wb_sunny, size: 48, color: Colors.orange),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Column(
@@ -99,10 +92,7 @@ class SuggestionsList extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               'Recomendações',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           const SizedBox(height: 12),
@@ -172,16 +162,8 @@ class MyPetsList extends StatelessWidget {
   Widget build(BuildContext context) {
     // Dados de exemplo - TODO: buscar da API
     final pets = [
-      {
-        'name': 'Rex',
-        'type': 'Cachorro',
-        'image': null,
-      },
-      {
-        'name': 'Mimi',
-        'type': 'Gato',
-        'image': null,
-      },
+      {'name': 'Rex', 'type': 'Cachorro', 'image': null},
+      {'name': 'Mimi', 'type': 'Gato', 'image': null},
     ];
 
     return Container(
@@ -196,10 +178,7 @@ class MyPetsList extends StatelessWidget {
               children: [
                 const Text(
                   'Meus Pets',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 TextButton(
                   onPressed: () {
@@ -285,7 +264,9 @@ class MyPetsList extends StatelessWidget {
                                       ),
                                     )
                                   : Icon(
-                                      pet['type'] == 'Cachorro' ? Icons.pets : Icons.pets,
+                                      pet['type'] == 'Cachorro'
+                                          ? Icons.pets
+                                          : Icons.pets,
                                       size: 30,
                                       color: Colors.grey[600],
                                     ),

@@ -38,32 +38,34 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen> {
   Future<void> _loadServices() async {
     // Obter localização atual
     await ref.read(locationNotifierProvider.notifier).getCurrentLocation();
-    
+
     final locationState = ref.read(locationNotifierProvider);
-    
+
     // Buscar serviços do tipo especificado
-    await ref.read(servicesNotifierProvider.notifier).searchServicesByType(
-      widget.serviceType,
-      userLocation: locationState.position,
-      radiusKm: _radiusKm,
-    );
+    await ref
+        .read(servicesNotifierProvider.notifier)
+        .searchServicesByType(
+          widget.serviceType,
+          userLocation: locationState.position,
+          radiusKm: _radiusKm,
+        );
   }
 
   void _applyFilters() {
     final notifier = ref.read(servicesNotifierProvider.notifier);
-    
+
     // Aplicar filtros
     if (_minRating > 0) {
       notifier.filterByRating(_minRating);
     }
-    
+
     if (_onlyOpen) {
       notifier.filterOnlyOpen();
     }
-    
+
     notifier.filterByDistance(_radiusKm);
     notifier.sortServices(_sortBy);
-    
+
     setState(() {
       _showFilters = false;
     });
@@ -112,7 +114,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen> {
           ),
           actions: [
             IconButton(
-              icon: Icon(_showFilters ? Icons.filter_list_off : Icons.filter_list),
+              icon: Icon(
+                _showFilters ? Icons.filter_list_off : Icons.filter_list,
+              ),
               onPressed: () {
                 setState(() {
                   _showFilters = !_showFilters;
@@ -123,44 +127,45 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen> {
               icon: const Icon(Icons.refresh),
               onPressed: _loadServices,
             ),
-        ],
-      ),
-      body: Column(
-        children: [
-          // Indicador de localização
-          if (locationState.status == LocationStatus.loading)
-            const LinearProgressIndicator(),
-          
-          // Filtros (expansível)
-          if (_showFilters)
-            ServiceFilters(
-              radiusKm: _radiusKm,
-              minRating: _minRating,
-              onlyOpen: _onlyOpen,
-              sortBy: _sortBy,
-              onRadiusChanged: (value) => setState(() => _radiusKm = value),
-              onRatingChanged: (value) => setState(() => _minRating = value),
-              onOnlyOpenChanged: (value) => setState(() => _onlyOpen = value),
-              onSortChanged: (value) => setState(() => _sortBy = value),
-              onApplyFilters: _applyFilters,
-            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            // Indicador de localização
+            if (locationState.status == LocationStatus.loading)
+              const LinearProgressIndicator(),
 
-          // Lista de serviços
-          Expanded(
-            child: _buildServicesList(servicesState, locationState),
-          ),
-        ],
+            // Filtros (expansível)
+            if (_showFilters)
+              ServiceFilters(
+                radiusKm: _radiusKm,
+                minRating: _minRating,
+                onlyOpen: _onlyOpen,
+                sortBy: _sortBy,
+                onRadiusChanged: (value) => setState(() => _radiusKm = value),
+                onRatingChanged: (value) => setState(() => _minRating = value),
+                onOnlyOpenChanged: (value) => setState(() => _onlyOpen = value),
+                onSortChanged: (value) => setState(() => _sortBy = value),
+                onApplyFilters: _applyFilters,
+              ),
+
+            // Lista de serviços
+            Expanded(child: _buildServicesList(servicesState, locationState)),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _loadServices,
+          tooltip: 'Atualizar localização',
+          child: const Icon(Icons.my_location),
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _loadServices,
-        tooltip: 'Atualizar localização',
-        child: const Icon(Icons.my_location),
-      ),
-    ),
-  );
+    );
   }
 
-  Widget _buildServicesList(ServicesState servicesState, LocationState locationState) {
+  Widget _buildServicesList(
+    ServicesState servicesState,
+    LocationState locationState,
+  ) {
     if (servicesState.status == ServicesStatus.loading) {
       return const Center(
         child: Column(
@@ -211,7 +216,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () async {
-                await ref.read(locationNotifierProvider.notifier).getCurrentLocation();
+                await ref
+                    .read(locationNotifierProvider.notifier)
+                    .getCurrentLocation();
                 if (mounted) _loadServices();
               },
               child: const Text('Permitir localização'),

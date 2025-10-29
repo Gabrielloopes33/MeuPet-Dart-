@@ -15,19 +15,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final List<OnboardingPage> _pages = [
     OnboardingPage(
       title: "Bem-vindo ao PetApp",
-      description: "Gerencie a saúde e bem-estar dos seus pets de forma simples e eficiente.",
+      description:
+          "Gerencie a saúde e bem-estar dos seus pets de forma simples e eficiente.",
       image: Icons.pets,
       color: Colors.blue,
     ),
     OnboardingPage(
       title: "Agende Consultas",
-      description: "Marque consultas veterinárias e acompanhe o histórico de saúde.",
+      description:
+          "Marque consultas veterinárias e acompanhe o histórico de saúde.",
       image: Icons.calendar_month,
       color: Colors.green,
     ),
     OnboardingPage(
       title: "Cuide com Amor",
-      description: "Mantenha todas as informações dos seus pets organizadas em um só lugar.",
+      description:
+          "Mantenha todas as informações dos seus pets organizadas em um só lugar.",
       image: Icons.favorite,
       color: Colors.red,
     ),
@@ -67,28 +70,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           AnimatedContainer(
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
-            child: Icon(
-              page.image,
-              size: 120,
-              color: page.color,
-            ),
+            child: Icon(page.image, size: 120, color: page.color),
           ),
           const SizedBox(height: 48),
           Text(
             page.title,
-            style: const TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
           Text(
             page.description,
-            style: const TextStyle(
-              fontSize: 16,
-              color: Colors.grey,
-            ),
+            style: const TextStyle(fontSize: 16, color: Colors.grey),
             textAlign: TextAlign.center,
           ),
         ],
@@ -121,7 +114,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
           ),
           const SizedBox(height: 32),
-          
+
           // Botões
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -138,7 +131,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 )
               else
                 const SizedBox(width: 80),
-              
+
               ElevatedButton(
                 onPressed: () {
                   if (_currentPage == _pages.length - 1) {

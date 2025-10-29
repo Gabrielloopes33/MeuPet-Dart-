@@ -2,14 +2,15 @@ import 'package:dio/dio.dart';
 
 class ApiClient {
   late Dio _dio;
-  static const String baseUrl = 'https://api.example.com'; // Substitua pela sua API
+  static const String baseUrl =
+      'https://api.example.com'; // Substitua pela sua API
 
   ApiClient() {
     _dio = Dio();
     _dio.options.baseUrl = baseUrl;
     _dio.options.connectTimeout = const Duration(seconds: 30);
     _dio.options.receiveTimeout = const Duration(seconds: 30);
-    
+
     // Interceptadores para logging e tratamento de erros
     _dio.interceptors.add(
       LogInterceptor(
@@ -18,7 +19,7 @@ class ApiClient {
         logPrint: (obj) => print(obj),
       ),
     );
-    
+
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {

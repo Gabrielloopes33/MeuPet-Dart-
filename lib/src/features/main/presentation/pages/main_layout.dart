@@ -13,7 +13,7 @@ class _MainLayoutState extends State<MainLayout> {
   int _currentIndex = 0;
 
   // Criar a estrutura principal com 4 abas: Home, Pets, Agenda, Perfil, replicando o estilo de (tabs)/_layout.tsx
-    static final List<Widget> _screens = [
+  static final List<Widget> _screens = [
     const HomeScreen(),
     const _PlaceholderScreen(title: 'Pets'),
     const _PlaceholderScreen(title: 'Agenda'),
@@ -23,10 +23,7 @@ class _MainLayoutState extends State<MainLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
@@ -77,22 +74,22 @@ class HomeScreen extends StatelessWidget {
             children: [
               // HomeHeader: "Olá, Gabriel" e botões
               const widgets.HomeHeader(),
-              
+
               // SearchBar: A barra de busca
               const widgets.SearchBar(),
-              
+
               // BannersCarousel: O carrossel de promoções (use PageView ou carousel_slider)
               const widgets.BannersCarousel(),
-              
+
               // ServicesGrid: A grade de serviços (use GridView)
               const widgets.ServicesGrid(),
-              
+
               // WeatherCard: O card de clima (chame a API do Open-Meteo)
               const WeatherCard(),
-              
+
               // SuggestionsList: A lista de recomendações (use ListViewBuilder horizontal)
               const SuggestionsList(),
-              
+
               // MyPetsList: A lista horizontal de pets (use ListView.builder horizontal)
               const MyPetsList(),
             ],
@@ -107,16 +104,12 @@ class HomeScreen extends StatelessWidget {
 class _PlaceholderScreen extends StatelessWidget {
   final String title;
 
-  const _PlaceholderScreen({
-    required this.title,
-  });
+  const _PlaceholderScreen({required this.title});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
+      appBar: AppBar(title: Text(title)),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

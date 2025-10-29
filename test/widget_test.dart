@@ -21,7 +21,7 @@ void main() {
 
     // Verify that the app loads without crashing
     expect(find.byType(MaterialApp), findsOneWidget);
-    
+
     // This is a basic smoke test to ensure the app starts
     // You can add more specific tests as you develop features
   });

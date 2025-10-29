@@ -30,31 +30,31 @@ class AppUtils {
   // Validação específica para telefones brasileiros
   static bool isValidBrazilianPhone(String phone) {
     String cleanPhone = phone.replaceAll(RegExp(r'[^\d]'), '');
-    
+
     // Deve ter 10 ou 11 dígitos (com DDD)
     if (cleanPhone.length < 10 || cleanPhone.length > 11) return false;
-    
+
     // Verificar se o DDD é válido (11 a 99)
     if (cleanPhone.length >= 2) {
       int ddd = int.tryParse(cleanPhone.substring(0, 2)) ?? 0;
       if (ddd < 11 || ddd > 99) return false;
     }
-    
+
     return true;
   }
 
   static bool isValidCPF(String cpf) {
     // Remove caracteres especiais
     String cleanCPF = cpf.replaceAll(RegExp(r'[^\d]'), '');
-    
+
     if (cleanCPF.length != 11) return false;
-    
+
     // Verifica se todos os dígitos são iguais
     if (RegExp(r'^(\d)\1*$').hasMatch(cleanCPF)) return false;
-    
+
     // Validação do CPF
     List<int> digits = cleanCPF.split('').map(int.parse).toList();
-    
+
     // Primeiro dígito verificador
     int sum = 0;
     for (int i = 0; i < 9; i++) {
@@ -62,9 +62,9 @@ class AppUtils {
     }
     int firstCheck = (sum * 10) % 11;
     if (firstCheck == 10) firstCheck = 0;
-    
+
     if (digits[9] != firstCheck) return false;
-    
+
     // Segundo dígito verificador
     sum = 0;
     for (int i = 0; i < 10; i++) {
@@ -72,14 +72,14 @@ class AppUtils {
     }
     int secondCheck = (sum * 10) % 11;
     if (secondCheck == 10) secondCheck = 0;
-    
+
     return digits[10] == secondCheck;
   }
 
   // Formatação de texto
   static String formatPhone(String phone) {
     String clean = phone.replaceAll(RegExp(r'[^\d]'), '');
-    
+
     if (clean.length <= 2) {
       return clean;
     } else if (clean.length <= 6) {
@@ -89,7 +89,7 @@ class AppUtils {
     } else if (clean.length == 11) {
       return '(${clean.substring(0, 2)}) ${clean.substring(2, 7)}-${clean.substring(7)}';
     }
-    
+
     return phone; // Se for muito longo, retorna original
   }
 
@@ -117,8 +117,11 @@ class AppUtils {
 
   // Debounce para evitar múltiplos cliques
   static bool _isDebouncing = false;
-  
-  static void debounce(Function() action, {Duration delay = const Duration(milliseconds: 500)}) {
+
+  static void debounce(
+    Function() action, {
+    Duration delay = const Duration(milliseconds: 500),
+  }) {
     if (_isDebouncing) return;
     _isDebouncing = true;
     action();

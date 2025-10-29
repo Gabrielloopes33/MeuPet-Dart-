@@ -6,11 +6,7 @@ class ServiceCard extends StatelessWidget {
   final ServiceProvider service;
   final VoidCallback? onTap;
 
-  const ServiceCard({
-    super.key,
-    required this.service,
-    this.onTap,
-  });
+  const ServiceCard({super.key, required this.service, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +52,9 @@ class ServiceCard extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 8),
-              
+
               // Endereço
               Row(
                 children: [
@@ -67,16 +63,16 @@ class ServiceCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       service.address,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.grey[600],
-                      ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
                     ),
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 8),
-              
+
               // Rating, reviews e distância
               Row(
                 children: [
@@ -99,13 +95,17 @@ class ServiceCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  
+
                   const Spacer(),
-                  
+
                   // Distância
                   Row(
                     children: [
-                      const Icon(Icons.directions_walk, size: 16, color: Colors.blue),
+                      const Icon(
+                        Icons.directions_walk,
+                        size: 16,
+                        color: Colors.blue,
+                      ),
                       const SizedBox(width: 4),
                       Text(
                         '${service.distanceKm.toStringAsFixed(1)} km',
@@ -118,7 +118,7 @@ class ServiceCard extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               // Descrição (se existir)
               if (service.description != null) ...[
                 const SizedBox(height: 8),
@@ -129,7 +129,7 @@ class ServiceCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
-              
+
               // Nível de preço (se existir)
               if (service.priceLevel != null) ...[
                 const SizedBox(height: 8),
@@ -151,9 +151,9 @@ class ServiceCard extends StatelessWidget {
                   ],
                 ),
               ],
-              
+
               const SizedBox(height: 12),
-              
+
               // Botões de ação
               Row(
                 children: [
@@ -169,10 +169,10 @@ class ServiceCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                  
+
                   if (service.phone != null && service.website != null)
                     const SizedBox(width: 8),
-                  
+
                   // Botão de website
                   if (service.website != null)
                     Expanded(
@@ -185,13 +185,14 @@ class ServiceCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                  
+
                   const SizedBox(width: 8),
-                  
+
                   // Botão de direções
                   Expanded(
                     child: ElevatedButton.icon(
-                      onPressed: () => _openDirections(service.latitude, service.longitude),
+                      onPressed: () =>
+                          _openDirections(service.latitude, service.longitude),
                       icon: const Icon(Icons.directions, size: 16),
                       label: const Text('Rota'),
                       style: ElevatedButton.styleFrom(

@@ -67,10 +67,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           return ServiceDetailsScreen(serviceId: serviceId);
         },
       ),
-      GoRoute(
-        path: '/',
-        redirect: (context, state) => '/home',
-      ),
+      GoRoute(path: '/', redirect: (context, state) => '/home'),
     ],
   );
 });

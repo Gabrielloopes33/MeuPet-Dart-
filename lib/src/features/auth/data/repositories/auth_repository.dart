@@ -15,17 +15,17 @@ class AuthRepository implements AuthRepositoryInterface {
   @override
   Future<User?> login(String phone, String password) async {
     try {
-      final response = await _apiService.post('/auth/login', data: {
-        'phone': phone,
-        'password': password,
-      });
-      
+      final response = await _apiService.post(
+        '/auth/login',
+        data: {'phone': phone, 'password': password},
+      );
+
       final token = response.data['token'];
       final userData = response.data['user'];
-      
+
       // Salvar token
       await _secureStorage.write(key: _tokenKey, value: token);
-      
+
       // Converter e retornar usuário
       return User.fromJson(userData);
     } catch (e) {
@@ -37,18 +37,17 @@ class AuthRepository implements AuthRepositoryInterface {
   @override
   Future<User?> register(String name, String phone, String password) async {
     try {
-      final response = await _apiService.post('/auth/register', data: {
-        'name': name,
-        'phone': phone,
-        'password': password,
-      });
-      
+      final response = await _apiService.post(
+        '/auth/register',
+        data: {'name': name, 'phone': phone, 'password': password},
+      );
+
       final token = response.data['token'];
       final userData = response.data['user'];
-      
+
       // Salvar token
       await _secureStorage.write(key: _tokenKey, value: token);
-      
+
       // Converter e retornar usuário
       return User.fromJson(userData);
     } catch (e) {

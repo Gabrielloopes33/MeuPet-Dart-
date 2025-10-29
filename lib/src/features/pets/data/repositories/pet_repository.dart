@@ -7,7 +7,7 @@ class PetRepository {
   PetRepository(this._apiService);
 
   // PetRepository: com métodos getPets(), createPet(pet), updatePet(id, pet), deletePet(id)
-  
+
   Future<List<Pet>> getPets() async {
     try {
       final response = await _apiService.get('/pets');

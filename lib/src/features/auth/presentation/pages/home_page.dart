@@ -8,7 +8,7 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authNotifierProvider);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('PetApp'),
@@ -26,29 +26,19 @@ class HomePage extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.pets,
-              size: 64,
-              color: Colors.blue,
-            ),
+            const Icon(Icons.pets, size: 64, color: Colors.blue),
             const SizedBox(height: 16),
             Text(
               'Bem-vindo, ${authState.user?.name ?? 'Usuário'}!',
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             const Text(
               'Cuide dos seus pets com amor',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),
+              style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             const SizedBox(height: 32),
-            
+
             // Cards com funcionalidades
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -95,23 +85,14 @@ class HomePage extends ConsumerWidget {
   ) {
     return Card(
       child: ListTile(
-        leading: Icon(
-          icon,
-          color: color,
-          size: 32,
-        ),
-        title: Text(
-          title,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
+        leading: Icon(icon, color: color, size: 32),
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Text(description),
         trailing: const Icon(Icons.arrow_forward_ios),
         onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('$title em desenvolvimento!'),
-            ),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('$title em desenvolvimento!')));
         },
       ),
     );

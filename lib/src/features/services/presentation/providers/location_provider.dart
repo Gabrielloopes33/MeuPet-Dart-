@@ -3,13 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 // Estados de localização
-enum LocationStatus {
-  initial,
-  loading,
-  success,
-  denied,
-  error,
-}
+enum LocationStatus { initial, loading, success, denied, error }
 
 // Estado da localização
 class LocationState {
@@ -17,11 +11,7 @@ class LocationState {
   final Position? position;
   final String? errorMessage;
 
-  const LocationState({
-    required this.status,
-    this.position,
-    this.errorMessage,
-  });
+  const LocationState({required this.status, this.position, this.errorMessage});
 
   LocationState copyWith({
     LocationStatus? status,
@@ -38,13 +28,14 @@ class LocationState {
 
 // Provider para gerenciar localização
 class LocationNotifier extends StateNotifier<LocationState> {
-  LocationNotifier() : super(const LocationState(status: LocationStatus.initial));
+  LocationNotifier()
+    : super(const LocationState(status: LocationStatus.initial));
 
   /// Solicitar permissão de localização
   Future<bool> requestLocationPermission() async {
     try {
       final permission = await Permission.location.request();
-      
+
       if (permission.isGranted) {
         return true;
       } else if (permission.isDenied) {
@@ -56,11 +47,12 @@ class LocationNotifier extends StateNotifier<LocationState> {
       } else if (permission.isPermanentlyDenied) {
         state = state.copyWith(
           status: LocationStatus.denied,
-          errorMessage: 'Permissão de localização permanentemente negada. Ative nas configurações.',
+          errorMessage:
+              'Permissão de localização permanentemente negada. Ative nas configurações.',
         );
         return false;
       }
-      
+
       return false;
     } catch (e) {
       state = state.copyWith(
@@ -74,14 +66,15 @@ class LocationNotifier extends StateNotifier<LocationState> {
   /// Obter localização atual
   Future<void> getCurrentLocation() async {
     state = state.copyWith(status: LocationStatus.loading);
-    
+
     try {
       // Verificar se localização está ativa
       final serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
         state = state.copyWith(
           status: LocationStatus.error,
-          errorMessage: 'Serviço de localização desativado. Ative nas configurações.',
+          errorMessage:
+              'Serviço de localização desativado. Ative nas configurações.',
         );
         return;
       }
@@ -111,12 +104,7 @@ class LocationNotifier extends StateNotifier<LocationState> {
   }
 
   /// Calcular distância entre dois pontos
-  double calculateDistance(
-    double lat1, 
-    double lon1, 
-    double lat2, 
-    double lon2,
-  ) {
+  double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
     return Geolocator.distanceBetween(lat1, lon1, lat2, lon2) / 1000; // em km
   }
 
@@ -127,14 +115,14 @@ class LocationNotifier extends StateNotifier<LocationState> {
     double radiusKm = 1.0,
   }) {
     if (state.position == null) return false;
-    
+
     final distance = calculateDistance(
       state.position!.latitude,
       state.position!.longitude,
       targetLat,
       targetLon,
     );
-    
+
     return distance <= radiusKm;
   }
 
@@ -145,6 +133,7 @@ class LocationNotifier extends StateNotifier<LocationState> {
 }
 
 // Provider da localização
-final locationNotifierProvider = StateNotifierProvider<LocationNotifier, LocationState>((ref) {
-  return LocationNotifier();
-});
+final locationNotifierProvider =
+    StateNotifierProvider<LocationNotifier, LocationState>((ref) {
+      return LocationNotifier();
+    });

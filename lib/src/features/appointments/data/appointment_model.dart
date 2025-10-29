@@ -28,7 +28,8 @@ class Appointment {
     this.updatedAt,
   });
 
-  factory Appointment.fromJson(Map<String, dynamic> json) => _$AppointmentFromJson(json);
+  factory Appointment.fromJson(Map<String, dynamic> json) =>
+      _$AppointmentFromJson(json);
 
   Map<String, dynamic> toJson() => _$AppointmentToJson(this);
 }

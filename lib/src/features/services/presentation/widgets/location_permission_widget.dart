@@ -32,7 +32,7 @@ class LocationPermissionWidget extends ConsumerWidget {
           _buildPermissionDeniedOverlay(context, locationNotifier),
         if (locationState.status == LocationStatus.loading)
           _buildLoadingOverlay(context),
-        if (locationState.status == LocationStatus.error && 
+        if (locationState.status == LocationStatus.error &&
             locationState.errorMessage != null)
           _buildErrorSnackBar(context, locationState.errorMessage!),
       ],
@@ -40,7 +40,7 @@ class LocationPermissionWidget extends ConsumerWidget {
   }
 
   Widget _buildPermissionDeniedOverlay(
-    BuildContext context, 
+    BuildContext context,
     LocationNotifier locationNotifier,
   ) {
     return Container(
@@ -88,7 +88,8 @@ class LocationPermissionWidget extends ConsumerWidget {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () async {
-                          final hasPermission = await locationNotifier.requestLocationPermission();
+                          final hasPermission = await locationNotifier
+                              .requestLocationPermission();
                           if (hasPermission) {
                             locationNotifier.getCurrentLocation();
                           } else {
@@ -143,8 +144,9 @@ class LocationPermissionWidget extends ConsumerWidget {
             label: 'Tentar novamente',
             textColor: Colors.white,
             onPressed: () {
-              final locationNotifier = ProviderScope.containerOf(context)
-                  .read(locationNotifierProvider.notifier);
+              final locationNotifier = ProviderScope.containerOf(
+                context,
+              ).read(locationNotifierProvider.notifier);
               locationNotifier.getCurrentLocation();
             },
           ),
@@ -196,7 +198,7 @@ class LocationStatusWidget extends ConsumerWidget {
           label: Text('Localização inicial'),
           backgroundColor: Colors.grey,
         );
-        
+
       case LocationStatus.loading:
         return const Chip(
           avatar: SizedBox(
@@ -207,21 +209,21 @@ class LocationStatusWidget extends ConsumerWidget {
           label: Text('Buscando localização...'),
           backgroundColor: Colors.blue,
         );
-        
+
       case LocationStatus.success:
         return const Chip(
           avatar: Icon(Icons.location_on, size: 16, color: Colors.white),
           label: Text('Localização ativa'),
           backgroundColor: Colors.green,
         );
-        
+
       case LocationStatus.denied:
         return const Chip(
           avatar: Icon(Icons.location_off, size: 16, color: Colors.white),
           label: Text('Permissão negada'),
           backgroundColor: Colors.red,
         );
-        
+
       case LocationStatus.error:
         return const Chip(
           avatar: Icon(Icons.error, size: 16, color: Colors.white),

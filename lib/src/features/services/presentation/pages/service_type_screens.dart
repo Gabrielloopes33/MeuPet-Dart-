@@ -20,10 +20,7 @@ class PetShopServicesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ServicesScreen(
-      serviceType: 'pet_shop',
-      title: 'Pet Shops',
-    );
+    return const ServicesScreen(serviceType: 'pet_shop', title: 'Pet Shops');
   }
 }
 
@@ -33,10 +30,7 @@ class GroomingServicesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ServicesScreen(
-      serviceType: 'grooming',
-      title: 'Banho & Tosa',
-    );
+    return const ServicesScreen(serviceType: 'grooming', title: 'Banho & Tosa');
   }
 }
 
@@ -46,9 +40,6 @@ class PetHotelServicesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ServicesScreen(
-      serviceType: 'hotel',
-      title: 'Hotéis Pet',
-    );
+    return const ServicesScreen(serviceType: 'hotel', title: 'Hotéis Pet');
   }
 }

@@ -7,10 +7,7 @@ import '../../data/models/service_provider.dart';
 class ServiceDetailsScreen extends ConsumerWidget {
   final String serviceId;
 
-  const ServiceDetailsScreen({
-    super.key,
-    required this.serviceId,
-  });
+  const ServiceDetailsScreen({super.key, required this.serviceId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,9 +31,9 @@ class ServiceDetailsScreen extends ConsumerWidget {
             ],
           ),
         ),
-        data: (service) => service != null 
-          ? _buildServiceDetails(context, service)
-          : const Center(child: Text('Serviço não encontrado')),
+        data: (service) => service != null
+            ? _buildServiceDetails(context, service)
+            : const Center(child: Text('Serviço não encontrado')),
       ),
     );
   }
@@ -70,10 +67,22 @@ class ServiceDetailsScreen extends ConsumerWidget {
                     fit: StackFit.expand,
                     children: [
                       service.photos.isNotEmpty
-                        ? Image.network(
-                            service.photos.first,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) => Container(
+                          ? Image.network(
+                              service.photos.first,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Container(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
+                                    child: const Icon(
+                                      Icons.business,
+                                      size: 64,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                            )
+                          : Container(
                               color: Theme.of(context).colorScheme.primary,
                               child: const Icon(
                                 Icons.business,
@@ -81,15 +90,6 @@ class ServiceDetailsScreen extends ConsumerWidget {
                                 color: Colors.white,
                               ),
                             ),
-                          )
-                        : Container(
-                            color: Theme.of(context).colorScheme.primary,
-                            child: const Icon(
-                              Icons.business,
-                              size: 64,
-                              color: Colors.white,
-                            ),
-                          ),
                       Container(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
@@ -141,15 +141,13 @@ class ServiceDetailsScreen extends ConsumerWidget {
                               const SizedBox(width: 4),
                               Text(
                                 service.rating.toStringAsFixed(1),
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: Theme.of(context).textTheme.titleMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 ' (${service.reviewCount} avaliações)',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: Colors.grey[600],
-                                ),
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(color: Colors.grey[600]),
                               ),
                             ],
                           ),
@@ -159,91 +157,88 @@ class ServiceDetailsScreen extends ConsumerWidget {
                       const SizedBox(height: 20),
 
                       // Informações básicas
-                      _buildInfoSection(
-                        context,
-                        'Informações',
-                        [
-                          _buildInfoItem(Icons.location_on, 'Endereço', service.address),
-                          if (service.phone != null)
-                            _buildInfoItem(Icons.phone, 'Telefone', service.phone!),
-                          if (service.website != null)
-                            _buildInfoItem(Icons.language, 'Website', service.website!),
+                      _buildInfoSection(context, 'Informações', [
+                        _buildInfoItem(
+                          Icons.location_on,
+                          'Endereço',
+                          service.address,
+                        ),
+                        if (service.phone != null)
                           _buildInfoItem(
-                            Icons.directions_walk,
-                            'Distância',
-                            '${service.distanceKm.toStringAsFixed(1)} km',
+                            Icons.phone,
+                            'Telefone',
+                            service.phone!,
                           ),
-                        ],
-                      ),
+                        if (service.website != null)
+                          _buildInfoItem(
+                            Icons.language,
+                            'Website',
+                            service.website!,
+                          ),
+                        _buildInfoItem(
+                          Icons.directions_walk,
+                          'Distância',
+                          '${service.distanceKm.toStringAsFixed(1)} km',
+                        ),
+                      ]),
 
                       if (service.description != null) ...[
                         const SizedBox(height: 24),
-                        _buildInfoSection(
-                          context,
-                          'Sobre',
-                          [
-                            Text(
-                              service.description!,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ],
-                        ),
+                        _buildInfoSection(context, 'Sobre', [
+                          Text(
+                            service.description!,
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ]),
                       ],
 
                       if (service.priceLevel != null) ...[
                         const SizedBox(height: 24),
-                        _buildInfoSection(
-                          context,
-                          'Nível de preço',
-                          [
-                            Row(
-                              children: List.generate(4, (index) {
-                                return Icon(
-                                  Icons.attach_money,
-                                  color: index < service.priceLevel!.toInt()
-                                      ? Colors.green
-                                      : Colors.grey[300],
-                                );
-                              }),
-                            ),
-                          ],
-                        ),
+                        _buildInfoSection(context, 'Nível de preço', [
+                          Row(
+                            children: List.generate(4, (index) {
+                              return Icon(
+                                Icons.attach_money,
+                                color: index < service.priceLevel!.toInt()
+                                    ? Colors.green
+                                    : Colors.grey[300],
+                              );
+                            }),
+                          ),
+                        ]),
                       ],
 
                       // Galeria de fotos (se houver mais)
                       if (service.photos.length > 1) ...[
                         const SizedBox(height: 24),
-                        _buildInfoSection(
-                          context,
-                          'Fotos',
-                          [
-                            SizedBox(
-                              height: 120,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: service.photos.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    width: 120,
-                                    margin: const EdgeInsets.only(right: 8),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: Image.network(
-                                        service.photos[index],
-                                        fit: BoxFit.cover,
-                                        errorBuilder: (context, error, stackTrace) =>
-                                          Container(
-                                            color: Colors.grey[300],
-                                            child: const Icon(Icons.image),
-                                          ),
-                                      ),
+                        _buildInfoSection(context, 'Fotos', [
+                          SizedBox(
+                            height: 120,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: service.photos.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  width: 120,
+                                  margin: const EdgeInsets.only(right: 8),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image.network(
+                                      service.photos[index],
+                                      fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              Container(
+                                                color: Colors.grey[300],
+                                                child: const Icon(Icons.image),
+                                              ),
                                     ),
-                                  );
-                                },
-                              ),
+                                  ),
+                                );
+                              },
                             ),
-                          ],
-                        ),
+                          ),
+                        ]),
                       ],
 
                       // Espaço para o bottom bar
@@ -282,9 +277,9 @@ class ServiceDetailsScreen extends ConsumerWidget {
                         label: const Text('Ligar'),
                       ),
                     ),
-                  
+
                   if (service.phone != null) const SizedBox(width: 8),
-                  
+
                   if (service.website != null)
                     Expanded(
                       child: OutlinedButton.icon(
@@ -293,13 +288,14 @@ class ServiceDetailsScreen extends ConsumerWidget {
                         label: const Text('Site'),
                       ),
                     ),
-                  
+
                   if (service.website != null) const SizedBox(width: 8),
-                  
+
                   Expanded(
                     flex: 2,
                     child: ElevatedButton.icon(
-                      onPressed: () => _openDirections(service.latitude, service.longitude),
+                      onPressed: () =>
+                          _openDirections(service.latitude, service.longitude),
                       icon: const Icon(Icons.directions),
                       label: const Text('Como chegar'),
                     ),
@@ -313,15 +309,19 @@ class ServiceDetailsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildInfoSection(BuildContext context, String title, List<Widget> children) {
+  Widget _buildInfoSection(
+    BuildContext context,
+    String title,
+    List<Widget> children,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 12),
         ...children,
@@ -351,10 +351,7 @@ class ServiceDetailsScreen extends ConsumerWidget {
                 const SizedBox(height: 2),
                 Text(
                   value,
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 14,
-                  ),
+                  style: TextStyle(color: Colors.grey[600], fontSize: 14),
                 ),
               ],
             ),

@@ -6,12 +6,7 @@ import '../../data/repositories/auth_repository_interface.dart';
 import '../../../../core/api/api_service.dart';
 
 // Estados de autenticação
-enum AuthStatus {
-  initial,
-  loading,
-  authenticated,
-  unauthenticated,
-}
+enum AuthStatus { initial, loading, authenticated, unauthenticated }
 
 // Estado da autenticação
 class AuthState {
@@ -19,17 +14,9 @@ class AuthState {
   final User? user;
   final String? errorMessage;
 
-  const AuthState({
-    required this.status,
-    this.user,
-    this.errorMessage,
-  });
+  const AuthState({required this.status, this.user, this.errorMessage});
 
-  AuthState copyWith({
-    AuthStatus? status,
-    User? user,
-    String? errorMessage,
-  }) {
+  AuthState copyWith({AuthStatus? status, User? user, String? errorMessage}) {
     return AuthState(
       status: status ?? this.status,
       user: user ?? this.user,
@@ -53,24 +40,21 @@ final authRepositoryProvider = Provider<AuthRepositoryInterface>((ref) {
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthRepositoryInterface _authRepository;
 
-  AuthNotifier(this._authRepository) 
-      : super(const AuthState(status: AuthStatus.initial)) {
+  AuthNotifier(this._authRepository)
+    : super(const AuthState(status: AuthStatus.initial)) {
     _checkAuthStatus();
   }
 
   // Verificar se usuário já está logado
   Future<void> _checkAuthStatus() async {
     state = state.copyWith(status: AuthStatus.loading);
-    
+
     try {
       final isLoggedIn = await _authRepository.isLoggedIn();
       if (isLoggedIn) {
         final user = await _authRepository.getProfile();
         if (user != null) {
-          state = state.copyWith(
-            status: AuthStatus.authenticated,
-            user: user,
-          );
+          state = state.copyWith(status: AuthStatus.authenticated, user: user);
         } else {
           state = state.copyWith(status: AuthStatus.unauthenticated);
         }
@@ -88,7 +72,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   // Login
   Future<void> login(String phone, String password) async {
     state = state.copyWith(status: AuthStatus.loading);
-    
+
     try {
       final user = await _authRepository.login(phone, password);
       if (user != null) {
@@ -116,7 +100,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   // Register
   Future<void> register(String name, String phone, String password) async {
     state = state.copyWith(status: AuthStatus.loading);
-    
+
     try {
       final user = await _authRepository.register(name, phone, password);
       if (user != null) {
@@ -142,7 +126,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   // Logout
   Future<void> logout() async {
     state = state.copyWith(status: AuthStatus.loading);
-    
+
     try {
       await _authRepository.logout();
       state = state.copyWith(
@@ -167,7 +151,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
 }
 
 // Provider do AuthNotifier
-final authNotifierProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
+final authNotifierProvider = StateNotifierProvider<AuthNotifier, AuthState>((
+  ref,
+) {
   final authRepository = ref.read(authRepositoryProvider);
   return AuthNotifier(authRepository);
 });

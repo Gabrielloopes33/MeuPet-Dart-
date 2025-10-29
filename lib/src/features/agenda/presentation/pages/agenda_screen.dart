@@ -51,9 +51,9 @@ class _AgendaScreenState extends State<AgendaScreen> {
               titleCentered: true,
             ),
           ),
-          
+
           const Divider(),
-          
+
           // Lista de agendamentos do dia selecionado
           Expanded(
             child: _selectedDay == null
@@ -130,17 +130,14 @@ class _AddAppointmentModalState extends State<AddAppointmentModal> {
             ),
           ),
           const SizedBox(height: 20),
-          
+
           const Text(
             'Novo Agendamento',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          
+
           const SizedBox(height: 20),
-          
+
           TextField(
             controller: _titleController,
             decoration: const InputDecoration(
@@ -148,9 +145,9 @@ class _AddAppointmentModalState extends State<AddAppointmentModal> {
               border: OutlineInputBorder(),
             ),
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           TextField(
             controller: _descriptionController,
             decoration: const InputDecoration(
@@ -159,16 +156,18 @@ class _AddAppointmentModalState extends State<AddAppointmentModal> {
             ),
             maxLines: 3,
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           Row(
             children: [
               Expanded(
                 child: ListTile(
                   leading: const Icon(Icons.calendar_today),
                   title: const Text('Data'),
-                  subtitle: Text('${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}'),
+                  subtitle: Text(
+                    '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
+                  ),
                   onTap: () async {
                     final date = await showDatePicker(
                       context: context,
@@ -188,7 +187,9 @@ class _AddAppointmentModalState extends State<AddAppointmentModal> {
                 child: ListTile(
                   leading: const Icon(Icons.access_time),
                   title: const Text('Hora'),
-                  subtitle: Text('${_selectedTime.hour}:${_selectedTime.minute.toString().padLeft(2, '0')}'),
+                  subtitle: Text(
+                    '${_selectedTime.hour}:${_selectedTime.minute.toString().padLeft(2, '0')}',
+                  ),
                   onTap: () async {
                     final time = await showTimePicker(
                       context: context,
@@ -204,9 +205,9 @@ class _AddAppointmentModalState extends State<AddAppointmentModal> {
               ),
             ],
           ),
-          
+
           const SizedBox(height: 20),
-          
+
           Row(
             children: [
               Expanded(

@@ -40,23 +40,26 @@ class _CustomMapWidgetState extends State<CustomMapWidget> {
     // Usar Web Mercator projection
     const double mapWidth = 256.0;
     const double mapHeight = 256.0;
-    
+
     // Conversão para coordenadas do mapa
     final x = (lng + 180.0) / 360.0 * mapWidth;
     final latRad = lat * math.pi / 180.0;
     final mercN = math.log(math.tan((math.pi / 4.0) + (latRad / 2.0)));
     final y = (mapHeight / 2.0) - (mapWidth * mercN / (2.0 * math.pi));
-    
+
     // Aplicar zoom e centralizar
     final scale = math.pow(2.0, _currentZoom - 8.0);
     final centerX = (widget.centerLongitude + 180.0) / 360.0 * mapWidth;
     final centerLatRad = widget.centerLatitude * math.pi / 180.0;
-    final centerMercN = math.log(math.tan((math.pi / 4.0) + (centerLatRad / 2.0)));
-    final centerY = (mapHeight / 2.0) - (mapWidth * centerMercN / (2.0 * math.pi));
-    
+    final centerMercN = math.log(
+      math.tan((math.pi / 4.0) + (centerLatRad / 2.0)),
+    );
+    final centerY =
+        (mapHeight / 2.0) - (mapWidth * centerMercN / (2.0 * math.pi));
+
     final pixelX = (size.width / 2.0) + ((x - centerX) * scale) + _offsetX;
     final pixelY = (size.height / 2.0) + ((y - centerY) * scale) + _offsetY;
-    
+
     return Offset(pixelX, pixelY);
   }
 
@@ -72,7 +75,7 @@ class _CustomMapWidgetState extends State<CustomMapWidget> {
           if (details.scale != 1.0) {
             _currentZoom = (_lastScaleValue * details.scale).clamp(8.0, 20.0);
           }
-          
+
           // Handle pan (only when not zooming)
           if ((details.scale - 1.0).abs() < 0.1) {
             _offsetX += details.focalPointDelta.dx;
@@ -89,7 +92,7 @@ class _CustomMapWidgetState extends State<CustomMapWidget> {
         child: LayoutBuilder(
           builder: (context, constraints) {
             final size = Size(constraints.maxWidth, constraints.maxHeight);
-            
+
             return Stack(
               children: [
                 // Fundo do mapa realista - estilo OpenStreetMap
@@ -98,7 +101,7 @@ class _CustomMapWidgetState extends State<CustomMapWidget> {
                     color: Color(0xFFF1F8E9), // Fundo verde bem claro
                   ),
                 ),
-                
+
                 // Padrão de ruas realista
                 CustomPaint(
                   size: size,
@@ -110,17 +113,23 @@ class _CustomMapWidgetState extends State<CustomMapWidget> {
                     offsetY: _offsetY,
                   ),
                 ),
-                
+
                 // Markers com posicionamento GPS real
                 ...widget.markers.map((marker) {
-                  final position = _latLngToPixel(marker.latitude, marker.longitude, size);
-                  
+                  final position = _latLngToPixel(
+                    marker.latitude,
+                    marker.longitude,
+                    size,
+                  );
+
                   // Só mostrar markers visíveis na tela
-                  if (position.dx < -50 || position.dx > size.width + 50 ||
-                      position.dy < -50 || position.dy > size.height + 50) {
+                  if (position.dx < -50 ||
+                      position.dx > size.width + 50 ||
+                      position.dy < -50 ||
+                      position.dy > size.height + 50) {
                     return const SizedBox.shrink();
                   }
-                  
+
                   return Positioned(
                     left: position.dx - 20,
                     top: position.dy - 40,
@@ -130,7 +139,7 @@ class _CustomMapWidgetState extends State<CustomMapWidget> {
                     ),
                   );
                 }),
-                
+
                 // Controles de zoom
                 Positioned(
                   bottom: 100,
@@ -182,11 +191,7 @@ class _CustomMapWidgetState extends State<CustomMapWidget> {
             ),
           ),
           // Marker principal
-          Icon(
-            Icons.location_on,
-            size: 36,
-            color: marker.color,
-          ),
+          Icon(Icons.location_on, size: 36, color: marker.color),
           // Ícone interno
           Positioned.fill(
             child: Center(
@@ -198,11 +203,7 @@ class _CustomMapWidgetState extends State<CustomMapWidget> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Icon(
-                  marker.icon,
-                  size: 12,
-                  color: marker.color,
-                ),
+                child: Icon(marker.icon, size: 12, color: marker.color),
               ),
             ),
           ),
@@ -211,7 +212,10 @@ class _CustomMapWidgetState extends State<CustomMapWidget> {
     );
   }
 
-  Widget _buildZoomButton({required IconData icon, required VoidCallback onPressed}) {
+  Widget _buildZoomButton({
+    required IconData icon,
+    required VoidCallback onPressed,
+  }) {
     return Container(
       width: 40,
       height: 40,
@@ -263,38 +267,38 @@ class MapGridPainter extends CustomPainter {
     final gridSpacing = (50 * (zoom / 13.0)).clamp(20.0, 100.0);
 
     // Desenhar grade de fundo
-    for (double x = (offsetX % gridSpacing) - gridSpacing; x < size.width + gridSpacing; x += gridSpacing) {
-      canvas.drawLine(
-        Offset(x, 0),
-        Offset(x, size.height),
-        paint,
-      );
+    for (
+      double x = (offsetX % gridSpacing) - gridSpacing;
+      x < size.width + gridSpacing;
+      x += gridSpacing
+    ) {
+      canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
     }
 
-    for (double y = (offsetY % gridSpacing) - gridSpacing; y < size.height + gridSpacing; y += gridSpacing) {
-      canvas.drawLine(
-        Offset(0, y),
-        Offset(size.width, y),
-        paint,
-      );
+    for (
+      double y = (offsetY % gridSpacing) - gridSpacing;
+      y < size.height + gridSpacing;
+      y += gridSpacing
+    ) {
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
     }
 
     // Desenhar algumas "ruas" principais
     final mainRoadSpacing = gridSpacing * 3;
-    for (double x = (offsetX % mainRoadSpacing) - mainRoadSpacing; x < size.width + mainRoadSpacing; x += mainRoadSpacing) {
-      canvas.drawLine(
-        Offset(x, 0),
-        Offset(x, size.height),
-        roadPaint,
-      );
+    for (
+      double x = (offsetX % mainRoadSpacing) - mainRoadSpacing;
+      x < size.width + mainRoadSpacing;
+      x += mainRoadSpacing
+    ) {
+      canvas.drawLine(Offset(x, 0), Offset(x, size.height), roadPaint);
     }
 
-    for (double y = (offsetY % mainRoadSpacing) - mainRoadSpacing; y < size.height + mainRoadSpacing; y += mainRoadSpacing) {
-      canvas.drawLine(
-        Offset(0, y),
-        Offset(size.width, y),
-        roadPaint,
-      );
+    for (
+      double y = (offsetY % mainRoadSpacing) - mainRoadSpacing;
+      y < size.height + mainRoadSpacing;
+      y += mainRoadSpacing
+    ) {
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), roadPaint);
     }
 
     // Adicionar alguns "quarteirões"
@@ -302,12 +306,16 @@ class MapGridPainter extends CustomPainter {
       ..color = Colors.green.withOpacity(0.1)
       ..style = PaintingStyle.fill;
 
-    for (double x = (offsetX % (gridSpacing * 2)) - (gridSpacing * 2); 
-         x < size.width + (gridSpacing * 2); 
-         x += gridSpacing * 4) {
-      for (double y = (offsetY % (gridSpacing * 2)) - (gridSpacing * 2); 
-           y < size.height + (gridSpacing * 2); 
-           y += gridSpacing * 4) {
+    for (
+      double x = (offsetX % (gridSpacing * 2)) - (gridSpacing * 2);
+      x < size.width + (gridSpacing * 2);
+      x += gridSpacing * 4
+    ) {
+      for (
+        double y = (offsetY % (gridSpacing * 2)) - (gridSpacing * 2);
+        y < size.height + (gridSpacing * 2);
+        y += gridSpacing * 4
+      ) {
         if ((x / gridSpacing + y / gridSpacing).floor() % 3 == 0) {
           canvas.drawRect(
             Rect.fromLTWH(x, y, gridSpacing * 1.5, gridSpacing * 1.5),
@@ -348,12 +356,14 @@ class RealisticMapPainter extends CustomPainter {
   void _drawStreets(Canvas canvas, Size size) {
     // Ruas normais - amarelo claro (estilo OSM)
     final streetPaint = Paint()
-      ..color = const Color(0xFFFFF8DC) // Amarelo bem claro
+      ..color =
+          const Color(0xFFFFF8DC) // Amarelo bem claro
       ..strokeWidth = 2.5;
 
     // Avenidas principais - amarelo mais escuro
     final avenuePaint = Paint()
-      ..color = const Color(0xFFFFE082) // Amarelo claro
+      ..color =
+          const Color(0xFFFFE082) // Amarelo claro
       ..strokeWidth = 5.0;
 
     final scale = math.pow(2.0, zoom - 10.0);
@@ -365,58 +375,84 @@ class RealisticMapPainter extends CustomPainter {
 
     // Primeiro desenhar avenidas principais (mais espessas)
     final avenueSpacing = streetSpacing * 3;
-    
-    for (double x = (offsetX + baseOffsetX) % avenueSpacing; x < size.width; x += avenueSpacing) {
+
+    for (
+      double x = (offsetX + baseOffsetX) % avenueSpacing;
+      x < size.width;
+      x += avenueSpacing
+    ) {
       canvas.drawLine(Offset(x, 0), Offset(x, size.height), avenuePaint);
     }
 
-    for (double y = (offsetY + baseOffsetY) % avenueSpacing; y < size.height; y += avenueSpacing) {
+    for (
+      double y = (offsetY + baseOffsetY) % avenueSpacing;
+      y < size.height;
+      y += avenueSpacing
+    ) {
       canvas.drawLine(Offset(0, y), Offset(size.width, y), avenuePaint);
     }
 
     // Bordas das ruas (mais escuras)
     final streetBorderPaint = Paint()
-      ..color = const Color(0xFFBDBDBD) // Cinza médio
+      ..color =
+          const Color(0xFFBDBDBD) // Cinza médio
       ..strokeWidth = 3.5;
 
     // Bordas das avenidas
     final avenueBorderPaint = Paint()
-      ..color = const Color(0xFFF57C00) // Laranja
+      ..color =
+          const Color(0xFFF57C00) // Laranja
       ..strokeWidth = 6.0;
 
     // Desenhar bordas das avenidas
-    for (double x = (offsetX + baseOffsetX) % avenueSpacing; x < size.width; x += avenueSpacing) {
+    for (
+      double x = (offsetX + baseOffsetX) % avenueSpacing;
+      x < size.width;
+      x += avenueSpacing
+    ) {
       canvas.drawLine(Offset(x, 0), Offset(x, size.height), avenueBorderPaint);
     }
 
-    for (double y = (offsetY + baseOffsetY) % avenueSpacing; y < size.height; y += avenueSpacing) {
+    for (
+      double y = (offsetY + baseOffsetY) % avenueSpacing;
+      y < size.height;
+      y += avenueSpacing
+    ) {
       canvas.drawLine(Offset(0, y), Offset(size.width, y), avenueBorderPaint);
     }
 
     // Desenhar bordas das ruas
-    for (double x = (offsetX + baseOffsetX) % streetSpacing; x < size.width; x += streetSpacing) {
+    for (
+      double x = (offsetX + baseOffsetX) % streetSpacing;
+      x < size.width;
+      x += streetSpacing
+    ) {
       canvas.drawLine(Offset(x, 0), Offset(x, size.height), streetBorderPaint);
     }
 
-    for (double y = (offsetY + baseOffsetY) % streetSpacing; y < size.height; y += streetSpacing) {
+    for (
+      double y = (offsetY + baseOffsetY) % streetSpacing;
+      y < size.height;
+      y += streetSpacing
+    ) {
       canvas.drawLine(Offset(0, y), Offset(size.width, y), streetBorderPaint);
     }
 
     // Depois desenhar ruas menores por cima
-    for (double x = (offsetX + baseOffsetX) % streetSpacing; x < size.width; x += streetSpacing) {
-      canvas.drawLine(
-        Offset(x, 0),
-        Offset(x, size.height),
-        streetPaint,
-      );
+    for (
+      double x = (offsetX + baseOffsetX) % streetSpacing;
+      x < size.width;
+      x += streetSpacing
+    ) {
+      canvas.drawLine(Offset(x, 0), Offset(x, size.height), streetPaint);
     }
 
-    for (double y = (offsetY + baseOffsetY) % streetSpacing; y < size.height; y += streetSpacing) {
-      canvas.drawLine(
-        Offset(0, y),
-        Offset(size.width, y),
-        streetPaint,
-      );
+    for (
+      double y = (offsetY + baseOffsetY) % streetSpacing;
+      y < size.height;
+      y += streetSpacing
+    ) {
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), streetPaint);
     }
   }
 
@@ -446,15 +482,16 @@ class RealisticMapPainter extends CustomPainter {
       for (int j = -1; j < blocksY; j++) {
         final x = i * blockSize + (offsetX % blockSize);
         final y = j * blockSize + (offsetY % blockSize);
-        
-        if (x > -blockSize && x < size.width + blockSize && 
-            y > -blockSize && y < size.height + blockSize) {
-          
+
+        if (x > -blockSize &&
+            x < size.width + blockSize &&
+            y > -blockSize &&
+            y < size.height + blockSize) {
           // Usar coordenadas GPS para determinar tipo de área
           final blockLat = centerLatitude + ((j - blocksY / 2) * 0.0005);
           final blockLng = centerLongitude + ((i - blocksX / 2) * 0.0005);
           final seed = ((blockLat * blockLng * 100000).abs() % 10).toInt();
-          
+
           Paint paint;
           if (seed < 2) {
             paint = parkPaint; // 20% parques
@@ -463,7 +500,7 @@ class RealisticMapPainter extends CustomPainter {
           } else {
             paint = buildingPaint; // 60% residencial
           }
-          
+
           // Desenhar o quarteirão com bordas arredondadas
           canvas.drawRRect(
             RRect.fromRectAndRadius(
@@ -479,9 +516,8 @@ class RealisticMapPainter extends CustomPainter {
 
   void _drawBounds(Canvas canvas, Size size) {
     // Fundo para o texto de informações
-    final backgroundPaint = Paint()
-      ..color = Colors.black.withOpacity(0.7);
-    
+    final backgroundPaint = Paint()..color = Colors.black.withOpacity(0.7);
+
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         const Rect.fromLTWH(8, 8, 140, 55),
@@ -493,7 +529,8 @@ class RealisticMapPainter extends CustomPainter {
     // Desenhar informações de localização
     final textPainter = TextPainter(
       text: TextSpan(
-        text: 'São Paulo, SP\nLat: ${centerLatitude.toStringAsFixed(3)}\nLng: ${centerLongitude.toStringAsFixed(3)}\nZoom: ${zoom.toStringAsFixed(1)}x',
+        text:
+            'São Paulo, SP\nLat: ${centerLatitude.toStringAsFixed(3)}\nLng: ${centerLongitude.toStringAsFixed(3)}\nZoom: ${zoom.toStringAsFixed(1)}x',
         style: const TextStyle(
           color: Colors.white,
           fontSize: 10,
@@ -502,7 +539,7 @@ class RealisticMapPainter extends CustomPainter {
       ),
       textDirection: TextDirection.ltr,
     );
-    
+
     textPainter.layout();
     textPainter.paint(canvas, const Offset(12, 12));
   }

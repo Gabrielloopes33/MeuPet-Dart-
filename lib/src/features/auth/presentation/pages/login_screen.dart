@@ -10,17 +10,17 @@ class LoginScreen extends ConsumerStatefulWidget {
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends ConsumerState<LoginScreen> 
+class _LoginScreenState extends ConsumerState<LoginScreen>
     with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _phoneController = TextEditingController();
   final _nameController = TextEditingController();
   final _passwordController = TextEditingController();
-  
+
   bool _isLoginMode = true;
   bool _isPasswordVisible = false;
   bool _showLoginForm = false;
-  
+
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
@@ -28,27 +28,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
   @override
   void initState() {
     super.initState();
-    
+
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 800),
       vsync: this,
     );
-    
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
-    
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOutBack,
-    ));
+
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: _animationController,
+            curve: Curves.easeOutBack,
+          ),
+        );
 
     // Iniciar animação após um delay
     Future.delayed(const Duration(milliseconds: 300), () {
@@ -90,11 +86,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.pets,
-                        size: 80,
-                        color: Colors.white,
-                      ),
+                      Icon(Icons.pets, size: 80, color: Colors.white),
                       const SizedBox(height: 16),
                       const Text(
                         'PetApp',
@@ -106,16 +98,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                       ),
                       const Text(
                         'Cuide dos seus pets com amor',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white70,
-                        ),
+                        style: TextStyle(fontSize: 16, color: Colors.white70),
                       ),
                     ],
                   ),
                 ),
               ),
-              
+
               // Formulário
               Expanded(
                 flex: 3,
@@ -132,8 +121,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                           topRight: Radius.circular(30),
                         ),
                       ),
-                      child: _showLoginForm 
-                          ? _buildLoginForm() 
+                      child: _showLoginForm
+                          ? _buildLoginForm()
                           : _buildWelcomeButtons(),
                     ),
                   ),
@@ -154,22 +143,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
         children: [
           const Text(
             'Bem-vindo de volta!',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
           const Text(
             'Entre na sua conta ou crie uma nova para continuar',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey,
-            ),
+            style: TextStyle(fontSize: 16, color: Colors.grey),
           ),
           const SizedBox(height: 48),
-          
+
           SizedBox(
             width: double.infinity,
             height: 56,
@@ -183,9 +166,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               child: const Text('Entrar'),
             ),
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           SizedBox(
             width: double.infinity,
             height: 56,
@@ -231,9 +214,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 32),
-            
+
             // Nome (apenas para registro)
             if (!_isLoginMode) ...[
               TextFormField(
@@ -252,7 +235,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               ),
               const SizedBox(height: 16),
             ],
-            
+
             // Telefone
             TextFormField(
               controller: _phoneController,
@@ -279,14 +262,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                 if (formatted != value) {
                   _phoneController.value = _phoneController.value.copyWith(
                     text: formatted,
-                    selection: TextSelection.collapsed(offset: formatted.length),
+                    selection: TextSelection.collapsed(
+                      offset: formatted.length,
+                    ),
                   );
                 }
               },
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Password
             TextFormField(
               controller: _passwordController,
@@ -296,7 +281,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                 prefixIcon: const Icon(Icons.lock_outlined),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                    _isPasswordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
                   ),
                   onPressed: () {
                     setState(() {
@@ -315,9 +302,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                 return null;
               },
             ),
-            
+
             const SizedBox(height: 32),
-            
+
             // Submit Button
             SizedBox(
               width: double.infinity,
@@ -327,9 +314,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                 child: Text(_isLoginMode ? 'Entrar' : 'Criar Conta'),
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Toggle mode
             Center(
               child: TextButton(
@@ -339,7 +326,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                   });
                 },
                 child: Text(
-                  _isLoginMode 
+                  _isLoginMode
                       ? 'Não tem conta? Criar uma'
                       : 'Já tem conta? Entrar',
                 ),
@@ -354,7 +341,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
   // Método para formatar telefone
   String _formatPhone(String phone) {
     String clean = phone.replaceAll(RegExp(r'[^\d]'), '');
-    
+
     if (clean.length <= 2) {
       return clean;
     } else if (clean.length <= 6) {
@@ -364,7 +351,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
     } else if (clean.length == 11) {
       return '(${clean.substring(0, 2)}) ${clean.substring(2, 7)}-${clean.substring(7)}';
     }
-    
+
     return phone; // Se for muito longo, retorna original
   }
 
@@ -372,15 +359,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
     if (_formKey.currentState!.validate()) {
       final phone = _phoneController.text.trim();
       final password = _passwordController.text;
-      
+
       try {
         if (_isLoginMode) {
           await ref.read(authNotifierProvider.notifier).login(phone, password);
         } else {
           final name = _nameController.text.trim();
-          await ref.read(authNotifierProvider.notifier).register(name, phone, password);
+          await ref
+              .read(authNotifierProvider.notifier)
+              .register(name, phone, password);
         }
-        
+
         // Verificar se o login/registro foi bem-sucedido
         final authState = ref.read(authNotifierProvider);
         if (authState.status == AuthStatus.authenticated && mounted) {
@@ -388,9 +377,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Erro: $e')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Erro: $e')));
         }
       }
     }

@@ -4,12 +4,7 @@ import '../../data/models/service_provider.dart';
 import '../../data/repositories/services_repository.dart';
 
 // Estados de busca de serviços
-enum ServicesStatus {
-  initial,
-  loading,
-  success,
-  error,
-}
+enum ServicesStatus { initial, loading, success, error }
 
 // Estado dos serviços
 class ServicesState {
@@ -49,11 +44,8 @@ final servicesRepositoryProvider = Provider<ServicesRepository>((ref) {
 class ServicesNotifier extends StateNotifier<ServicesState> {
   final ServicesRepository _repository;
 
-  ServicesNotifier(this._repository) 
-      : super(const ServicesState(
-          status: ServicesStatus.initial,
-          services: [],
-        ));
+  ServicesNotifier(this._repository)
+    : super(const ServicesState(status: ServicesStatus.initial, services: []));
 
   /// Buscar serviços por tipo
   Future<void> searchServicesByType(
@@ -181,13 +173,17 @@ class ServicesNotifier extends StateNotifier<ServicesState> {
 }
 
 // Provider dos serviços
-final servicesNotifierProvider = StateNotifierProvider<ServicesNotifier, ServicesState>((ref) {
-  final repository = ref.read(servicesRepositoryProvider);
-  return ServicesNotifier(repository);
-});
+final servicesNotifierProvider =
+    StateNotifierProvider<ServicesNotifier, ServicesState>((ref) {
+      final repository = ref.read(servicesRepositoryProvider);
+      return ServicesNotifier(repository);
+    });
 
 // Provider para obter detalhes de um serviço específico
-final serviceDetailsProvider = FutureProvider.family<ServiceProvider?, String>((ref, serviceId) async {
+final serviceDetailsProvider = FutureProvider.family<ServiceProvider?, String>((
+  ref,
+  serviceId,
+) async {
   final repository = ref.read(servicesRepositoryProvider);
   return await repository.getServiceDetails(serviceId);
 });

@@ -30,10 +30,7 @@ class HomeHeader extends ConsumerWidget {
                 ),
                 const Text(
                   'Como seu pet está hoje?',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey,
-                  ),
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
               ],
             ),
@@ -134,10 +131,7 @@ class BannersCarousel extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     banner['subtitle'] as String,
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                    ),
+                    style: const TextStyle(color: Colors.white70, fontSize: 14),
                   ),
                 ],
               ),
@@ -160,37 +154,37 @@ class ServicesGrid extends StatelessWidget {
         'name': 'Veterinário',
         'icon': Icons.local_hospital,
         'color': Colors.red,
-        'route': '/veterinary'
+        'route': '/veterinary',
       },
       {
         'name': 'Pet Shop',
         'icon': Icons.store,
         'color': Colors.blue,
-        'route': '/pet-shop'
+        'route': '/pet-shop',
       },
       {
         'name': 'Banho & Tosa',
         'icon': Icons.shower,
         'color': Colors.green,
-        'route': '/grooming'
+        'route': '/grooming',
       },
       {
         'name': 'Hotel Pet',
         'icon': Icons.hotel,
         'color': Colors.orange,
-        'route': '/pet-hotel'
+        'route': '/pet-hotel',
       },
       {
         'name': 'Adestramento',
         'icon': Icons.school,
         'color': Colors.purple,
-        'route': null // Em desenvolvimento
+        'route': null, // Em desenvolvimento
       },
       {
         'name': 'Emergência',
         'icon': Icons.emergency,
         'color': Colors.red[800]!,
-        'route': null // Em desenvolvimento
+        'route': null, // Em desenvolvimento
       },
     ];
 
@@ -201,10 +195,7 @@ class ServicesGrid extends StatelessWidget {
         children: [
           const Text(
             'Serviços',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),
           GridView.builder(
@@ -226,7 +217,11 @@ class ServicesGrid extends StatelessWidget {
                     context.go(route);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('${service['name']} - Em desenvolvimento')),
+                      SnackBar(
+                        content: Text(
+                          '${service['name']} - Em desenvolvimento',
+                        ),
+                      ),
                     );
                   }
                 },

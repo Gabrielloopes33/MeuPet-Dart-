@@ -13,7 +13,9 @@ class PetsScreen extends StatelessWidget {
             onPressed: () {
               // TODO: Navegar para adicionar pet
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Adicionar Pet - Em desenvolvimento')),
+                const SnackBar(
+                  content: Text('Adicionar Pet - Em desenvolvimento'),
+                ),
               );
             },
             icon: const Icon(Icons.add),
@@ -24,25 +26,16 @@ class PetsScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.pets,
-              size: 80,
-              color: Colors.grey,
-            ),
+            Icon(Icons.pets, size: 80, color: Colors.grey),
             SizedBox(height: 16),
             Text(
               'Nenhum pet cadastrado',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8),
             Text(
               'Adicione seu primeiro pet!',
-              style: TextStyle(
-                color: Colors.grey,
-              ),
+              style: TextStyle(color: Colors.grey),
             ),
           ],
         ),

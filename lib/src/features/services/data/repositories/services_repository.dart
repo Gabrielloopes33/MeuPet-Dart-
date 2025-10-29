@@ -4,7 +4,6 @@ import '../models/service_provider.dart';
 /// Repository mock para serviços baseado em localização GPS
 /// Integra com dados simulados de empresas próximas
 class ServicesRepository {
-  
   // Dados mock de serviços por tipo
   static final Map<String, List<Map<String, dynamic>>> _mockServices = {
     'veterinary': [
@@ -18,14 +17,17 @@ class ServicesRepository {
         'website': 'https://vetsfclinica.com.br',
         'rating': 4.5,
         'reviewCount': 127,
-        'photos': ['https://via.placeholder.com/300x200/4CAF50/FFFFFF?text=Vet+1'],
-        'description': 'Clínica veterinária especializada em cães e gatos com atendimento 24h.',
+        'photos': [
+          'https://via.placeholder.com/300x200/4CAF50/FFFFFF?text=Vet+1',
+        ],
+        'description':
+            'Clínica veterinária especializada em cães e gatos com atendimento 24h.',
         'serviceType': 'veterinary',
         'priceLevel': 3.0,
         'isOpen': true,
       },
       {
-        'id': 'vet_2', 
+        'id': 'vet_2',
         'name': 'Hospital Veterinário PetCare',
         'address': 'Av. Paulista, 1500 - Bela Vista',
         'latitude': -23.5630,
@@ -33,7 +35,9 @@ class ServicesRepository {
         'phone': '(11) 2222-3333',
         'rating': 4.8,
         'reviewCount': 89,
-        'photos': ['https://via.placeholder.com/300x200/2196F3/FFFFFF?text=Vet+2'],
+        'photos': [
+          'https://via.placeholder.com/300x200/2196F3/FFFFFF?text=Vet+2',
+        ],
         'description': 'Hospital veterinário com cirurgia e internação.',
         'serviceType': 'veterinary',
         'priceLevel': 4.0,
@@ -50,7 +54,9 @@ class ServicesRepository {
         'phone': '(11) 4444-5555',
         'rating': 4.2,
         'reviewCount': 203,
-        'photos': ['https://via.placeholder.com/300x200/FF9800/FFFFFF?text=Shop+1'],
+        'photos': [
+          'https://via.placeholder.com/300x200/FF9800/FFFFFF?text=Shop+1',
+        ],
         'description': 'Pet shop completo com ração, brinquedos e acessórios.',
         'serviceType': 'pet_shop',
         'priceLevel': 2.0,
@@ -65,9 +71,11 @@ class ServicesRepository {
         'phone': '(11) 5555-6666',
         'rating': 4.6,
         'reviewCount': 156,
-        'photos': ['https://via.placeholder.com/300x200/9C27B0/FFFFFF?text=Shop+2'],
+        'photos': [
+          'https://via.placeholder.com/300x200/9C27B0/FFFFFF?text=Shop+2',
+        ],
         'description': 'A maior pet shop da região com produtos importados.',
-        'serviceType': 'pet_shop', 
+        'serviceType': 'pet_shop',
         'priceLevel': 3.0,
         'isOpen': true,
       },
@@ -82,7 +90,9 @@ class ServicesRepository {
         'phone': '(11) 6666-7777',
         'rating': 4.7,
         'reviewCount': 94,
-        'photos': ['https://via.placeholder.com/300x200/E91E63/FFFFFF?text=Groom+1'],
+        'photos': [
+          'https://via.placeholder.com/300x200/E91E63/FFFFFF?text=Groom+1',
+        ],
         'description': 'Banho e tosa profissional com produtos premium.',
         'serviceType': 'grooming',
         'priceLevel': 2.0,
@@ -97,7 +107,9 @@ class ServicesRepository {
         'phone': '(11) 7777-8888',
         'rating': 4.9,
         'reviewCount': 67,
-        'photos': ['https://via.placeholder.com/300x200/00BCD4/FFFFFF?text=Spa+1'],
+        'photos': [
+          'https://via.placeholder.com/300x200/00BCD4/FFFFFF?text=Spa+1',
+        ],
         'description': 'Spa completo para pets com massagem e aromaterapia.',
         'serviceType': 'grooming',
         'priceLevel': 4.0,
@@ -114,7 +126,9 @@ class ServicesRepository {
         'phone': '(11) 8888-9999',
         'rating': 4.4,
         'reviewCount': 78,
-        'photos': ['https://via.placeholder.com/300x200/8BC34A/FFFFFF?text=Hotel+1'],
+        'photos': [
+          'https://via.placeholder.com/300x200/8BC34A/FFFFFF?text=Hotel+1',
+        ],
         'description': 'Hotel para pets com playground e monitoramento 24h.',
         'serviceType': 'hotel',
         'priceLevel': 3.0,
@@ -129,7 +143,9 @@ class ServicesRepository {
         'phone': '(11) 9999-0000',
         'rating': 4.8,
         'reviewCount': 45,
-        'photos': ['https://via.placeholder.com/300x200/FF5722/FFFFFF?text=Resort+1'],
+        'photos': [
+          'https://via.placeholder.com/300x200/FF5722/FFFFFF?text=Resort+1',
+        ],
         'description': 'Resort de luxo para pets com piscina e day care.',
         'serviceType': 'hotel',
         'priceLevel': 4.0,
@@ -146,59 +162,65 @@ class ServicesRepository {
   }) async {
     try {
       // Se não tiver localização, usar localização padrão (São Paulo)
-      final location = userLocation ?? Position(
-        latitude: -23.5505,
-        longitude: -46.6333,
-        timestamp: DateTime.now(),
-        accuracy: 0,
-        altitude: 0,
-        altitudeAccuracy: 0,
-        heading: 0,
-        headingAccuracy: 0,
-        speed: 0,
-        speedAccuracy: 0,
-      );
+      final location =
+          userLocation ??
+          Position(
+            latitude: -23.5505,
+            longitude: -46.6333,
+            timestamp: DateTime.now(),
+            accuracy: 0,
+            altitude: 0,
+            altitudeAccuracy: 0,
+            heading: 0,
+            headingAccuracy: 0,
+            speed: 0,
+            speedAccuracy: 0,
+          );
 
       // Simular delay de rede
       await Future.delayed(const Duration(milliseconds: 500));
 
       // Buscar serviços do tipo especificado
       final services = _mockServices[serviceType] ?? [];
-      
+
       List<ServiceProvider> providers = [];
-      
+
       for (final service in services) {
         // Calcular distância
-        final distance = Geolocator.distanceBetween(
-          location.latitude,
-          location.longitude,
-          service['latitude'].toDouble(),
-          service['longitude'].toDouble(),
-        ) / 1000; // Converter para km
-        
+        final distance =
+            Geolocator.distanceBetween(
+              location.latitude,
+              location.longitude,
+              service['latitude'].toDouble(),
+              service['longitude'].toDouble(),
+            ) /
+            1000; // Converter para km
+
         // Sempre incluir (raio bem grande)
-        providers.add(ServiceProvider(
-          id: service['id'],
-          name: service['name'],
-          address: service['address'],
-          latitude: service['latitude'].toDouble(),
-          longitude: service['longitude'].toDouble(),
-          phone: service['phone'],
-          website: service['website'],
-          rating: service['rating'].toDouble(),
-          reviewCount: service['reviewCount'],
-          photos: List<String>.from(service['photos']),
-          description: service['description'],
-          serviceType: service['serviceType'],
-          priceLevel: service['priceLevel']?.toDouble(),
-          isOpen: service['isOpen'],
-          distanceKm: distance,
-        ));
+        providers.add(
+          ServiceProvider(
+            id: service['id'],
+            name: service['name'],
+            address: service['address'],
+            latitude: service['latitude'].toDouble(),
+            longitude: service['longitude'].toDouble(),
+            phone: service['phone'],
+            website: service['website'],
+            rating: service['rating'].toDouble(),
+            reviewCount: service['reviewCount'],
+            photos: List<String>.from(service['photos']),
+            description: service['description'],
+            serviceType: service['serviceType'],
+            priceLevel: service['priceLevel']?.toDouble(),
+            isOpen: service['isOpen'],
+            distanceKm: distance,
+          ),
+        );
       }
 
       // Ordenar por distância
       providers.sort((a, b) => a.distanceKm.compareTo(b.distanceKm));
-      
+
       return providers;
     } catch (e) {
       print('Erro ao buscar serviços: $e');
@@ -212,7 +234,7 @@ class ServicesRepository {
     double radiusKm = 10.0,
   }) async {
     final allServices = <ServiceProvider>[];
-    
+
     for (final serviceType in _mockServices.keys) {
       final services = await searchServicesByType(
         serviceType,
@@ -224,14 +246,14 @@ class ServicesRepository {
 
     // Ordenar por distância
     allServices.sort((a, b) => a.distanceKm.compareTo(b.distanceKm));
-    
+
     return allServices;
   }
 
   /// Buscar detalhes de um serviço específico
   Future<ServiceProvider?> getServiceDetails(String serviceId) async {
     await Future.delayed(const Duration(milliseconds: 300));
-    
+
     for (final services in _mockServices.values) {
       for (final service in services) {
         if (service['id'] == serviceId) {
@@ -255,7 +277,7 @@ class ServicesRepository {
         }
       }
     }
-    
+
     return null;
   }
 }

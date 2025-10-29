@@ -11,7 +11,7 @@ class ApiService {
     _dio.options.baseUrl = baseUrl;
     _dio.options.connectTimeout = const Duration(seconds: 30);
     _dio.options.receiveTimeout = const Duration(seconds: 30);
-    
+
     // Interceptor do Dio para injetar automaticamente o token JWT
     _dio.interceptors.add(
       InterceptorsWrapper(
@@ -32,7 +32,7 @@ class ApiService {
         },
       ),
     );
-    
+
     // Interceptor para logging (opcional)
     _dio.interceptors.add(
       LogInterceptor(

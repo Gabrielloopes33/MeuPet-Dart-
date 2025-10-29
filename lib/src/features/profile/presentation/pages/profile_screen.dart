@@ -18,7 +18,9 @@ class ProfileScreen extends ConsumerWidget {
             onPressed: () {
               // TODO: Editar perfil
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Editar perfil - Em desenvolvimento')),
+                const SnackBar(
+                  content: Text('Editar perfil - Em desenvolvimento'),
+                ),
               );
             },
             icon: const Icon(Icons.edit),
@@ -65,17 +67,14 @@ class ProfileScreen extends ConsumerWidget {
                   const SizedBox(height: 8),
                   Text(
                     user?.phone ?? 'Telefone não informado',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 32),
-            
+
             // Informações do usuário
             Card(
               child: Column(
@@ -102,9 +101,9 @@ class ProfileScreen extends ConsumerWidget {
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Configurações
             Card(
               child: Column(
@@ -143,9 +142,9 @@ class ProfileScreen extends ConsumerWidget {
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Ações
             Card(
               child: Column(
@@ -170,7 +169,10 @@ class ProfileScreen extends ConsumerWidget {
                   const Divider(height: 1),
                   ListTile(
                     leading: const Icon(Icons.logout, color: Colors.red),
-                    title: const Text('Sair', style: TextStyle(color: Colors.red)),
+                    title: const Text(
+                      'Sair',
+                      style: TextStyle(color: Colors.red),
+                    ),
                     onTap: () async {
                       // Tela para o usuário ver suas informações e ter a opção de logout
                       final shouldLogout = await showDialog<bool>(
@@ -190,7 +192,7 @@ class ProfileScreen extends ConsumerWidget {
                           ],
                         ),
                       );
-                      
+
                       if (shouldLogout == true) {
                         await ref.read(authNotifierProvider.notifier).logout();
                       }

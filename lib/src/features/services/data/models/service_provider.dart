@@ -40,7 +40,7 @@ class ServiceProvider {
     required this.distanceKm,
   });
 
-  factory ServiceProvider.fromJson(Map<String, dynamic> json) => 
+  factory ServiceProvider.fromJson(Map<String, dynamic> json) =>
       _$ServiceProviderFromJson(json);
 
   Map<String, dynamic> toJson() => _$ServiceProviderToJson(this);
