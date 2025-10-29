@@ -153,8 +153,8 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _loadServices,
-        child: const Icon(Icons.my_location),
         tooltip: 'Atualizar localização',
+        child: const Icon(Icons.my_location),
       ),
     ),
   );
