@@ -41,7 +41,7 @@ dependencies:
   flutter_riverpod: ^2.4.0  # Recomendado, moderno
   
   # Routing
-  go_router: ^12.1.1  # Recomendado, da equipe do Flutter
+  go_router: ^17.0.0  # Recomendado, da equipe do Flutter
   
   # Secure Storage
   flutter_secure_storage: ^9.0.0  # Para guardar o token JWT
