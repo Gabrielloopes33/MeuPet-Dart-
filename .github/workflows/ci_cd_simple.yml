@@ -95,7 +95,7 @@ jobs:
           fi
 
       - name: 📦 Upload APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: android-apk-${{ github.run_number }}
           path: build/app/outputs/flutter-apk/*.apk
@@ -132,7 +132,7 @@ jobs:
           echo "✅ Web build completed"
 
       - name: 📦 Upload Web Build
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: web-build-${{ github.run_number }}
           path: build/web/
